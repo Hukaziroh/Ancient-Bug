@@ -26,8 +26,12 @@ public class PlayerMovement : MonoBehaviour
     float defaultGravity; 
     Coroutine dashCoroutine;
 
+    [Header("활강 설정")]
+    public float glideFallSpeed = 2f;
+    private bool isJumpHolding;
+
     Rigidbody2D rb;
-    BoxCollider2D boxCollider;
+    CapsuleCollider2D capsuleCollider;
     Animator anim;
 
     Vector2 moveInput;
@@ -37,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
 
         defaultGravity = rb.gravityScale;
         currentDashCount = maxDashCount;
@@ -58,6 +62,10 @@ public class PlayerMovement : MonoBehaviour
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);
         }
+        else if (!isGrounded && rb.linearVelocity.y < 0f && isJumpHolding)
+        {          
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -glideFallSpeed));
+        }
 
         if (anim != null)
         {         
@@ -71,10 +79,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CheckGrounded()
     {     
-        RaycastHit2D raycastHit = Physics2D.BoxCast(boxCollider.bounds.center, boxCollider.bounds.size, 0f, Vector2.down, castDistance, groundLayer);    
-        Color rayColor = raycastHit.collider != null ? Color.green : Color.red;
-        Debug.DrawRay(boxCollider.bounds.center + new Vector3(boxCollider.bounds.extents.x, 0), Vector2.down * (boxCollider.bounds.extents.y + castDistance), rayColor);
-
+        RaycastHit2D raycastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, Vector2.down, castDistance, groundLayer);       
         return raycastHit.collider != null;
     }
 
@@ -87,10 +92,11 @@ public class PlayerMovement : MonoBehaviour
     {
         if (isDashing) return;
 
+        isJumpHolding = value.isPressed;
+
         if (value.isPressed && currentJumpCount > 0 && moveInput.y > -0.5f)
         {
             currentJumpCount--;
-
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
     }
