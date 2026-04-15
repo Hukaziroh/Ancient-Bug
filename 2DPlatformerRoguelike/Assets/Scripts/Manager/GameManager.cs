@@ -10,6 +10,6 @@ public class GameManager : MonoBehaviour
 
     public void Startbutton()
     {
-        SceneManager.LoadScene("Level01");
+        SceneManager.LoadScene("Game");
     }
 }

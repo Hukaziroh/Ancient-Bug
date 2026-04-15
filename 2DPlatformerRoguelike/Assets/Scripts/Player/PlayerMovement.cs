@@ -22,13 +22,20 @@ public class PlayerMovement : MonoBehaviour
     public float dashCooldown = 1f;
     int currentDashCount;
     Coroutine cooldownCoroutine;
-    bool isDashing;
+    
     float defaultGravity; 
     Coroutine dashCoroutine;
 
     [Header("활강 설정")]
     public float glideFallSpeed = 2f;
     private bool isJumpHolding;
+
+    [Header("넉백 설정")]
+    public float knockbackForce = 10f;     
+    public float knockbackUpForce = 5f;    
+    public float knockbackDuration = 0.2f; 
+    public bool isKnockbacked { get; private set; }
+    public bool isDashing { get; private set; }
 
     Rigidbody2D rb;
     CapsuleCollider2D capsuleCollider;
@@ -49,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isDashing) return;
+        if (isDashing || isKnockbacked) return;
 
         isGrounded = CheckGrounded();
 
@@ -124,6 +131,15 @@ public class PlayerMovement : MonoBehaviour
 
 
     }
+
+    public void ApplyKnockback(Transform attacker)
+    {
+        if (isKnockbacked || isDashing) return;
+        Player playerInfo = GetComponent<Player>();
+        if (playerInfo != null && playerInfo.IsDead) return;
+        StartCoroutine(KnockbackRoutine(attacker));
+    }
+
     private IEnumerator DashRoutine()
     {
         isDashing = true;
@@ -148,9 +164,21 @@ public class PlayerMovement : MonoBehaviour
         cooldownCoroutine = null;
     }
 
+    private IEnumerator KnockbackRoutine(Transform attacker)
+    {
+        isKnockbacked = true;
+
+        float direction = transform.position.x < attacker.position.x ? -1f : 1f;
+        rb.linearVelocity = Vector2.zero;
+        rb.linearVelocity = new Vector2(direction * knockbackForce, knockbackUpForce);
+        yield return new WaitForSeconds(knockbackDuration);
+
+        isKnockbacked = false;
+    }
+
     private void FixedUpdate()
     {
-        if (isDashing) return;
+        if (isDashing || isKnockbacked) return;
 
         rb.linearVelocity = new Vector2(moveInput.x * moveSpeed, rb.linearVelocity.y);
 

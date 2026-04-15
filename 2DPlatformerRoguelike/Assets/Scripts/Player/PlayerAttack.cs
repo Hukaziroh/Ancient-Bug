@@ -7,8 +7,8 @@ public class PlayerAttack : MonoBehaviour
     public float AttackDamage = 5f;
 
     [Header("타격 판정 설정")]
-    public Transform attackPoint;  
-    public float attackRange = 1f; 
+    public Transform attackPoint;
+    public Vector2 attackBoxSize = new Vector2(2f, 1f);
     public LayerMask enemyLayer;   
 
     Animator anim;
@@ -51,7 +51,7 @@ public class PlayerAttack : MonoBehaviour
         if (attackPoint == null) return;
 
        
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, attackBoxSize,0f, enemyLayer);
 
      
         foreach (Collider2D enemy in hitEnemies)
@@ -69,6 +69,6 @@ public class PlayerAttack : MonoBehaviour
     {
         if (attackPoint == null) return;
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireCube(attackPoint.position, attackBoxSize);
     }
 }
