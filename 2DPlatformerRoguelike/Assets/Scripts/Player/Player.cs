@@ -71,7 +71,7 @@ public class Player : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
-        if (anim != null) anim.SetTrigger("IsDead");
+        if (anim != null) anim.SetTrigger("Dead");
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerAttack>().enabled = false;
 

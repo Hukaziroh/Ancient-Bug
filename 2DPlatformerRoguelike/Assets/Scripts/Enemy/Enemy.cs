@@ -150,13 +150,14 @@ public class Enemy : MonoBehaviour, IDamageable
     private void Die()
     {
         isDead = true;
+        if (anim != null) anim.SetTrigger("Dead");
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y); 
 
         Collider2D coll = GetComponent<Collider2D>();
         if (coll != null) coll.enabled = false;
 
         rb.gravityScale = 0;
-        Destroy(gameObject, 0.5f);
+        Destroy(gameObject, 2f);
     }
 
     private void OnDrawGizmosSelected()
