@@ -15,6 +15,10 @@ public class EnemyStatData : ScriptableObject
 
 public interface IDamageable
 {
-    // 데미지를 입었을 때 호출될 함수
     void TakeDamage(float damage);
+}
+
+public interface IProjectile
+{
+    void Setup(Vector2 moveDirection, float attackDamage);
 }

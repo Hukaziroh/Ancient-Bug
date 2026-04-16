@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class MoveEnemy : MonoBehaviour, IDamageable
+public class Enemy : MonoBehaviour, IDamageable
 {
     [Header("스탯 및 설정")]
     public EnemyStatData statData;
@@ -13,8 +13,8 @@ public class MoveEnemy : MonoBehaviour, IDamageable
 
     [Header("공격 설정")]
     public float attackRange = 5f;      
-    public Transform attackPoint;       
-    public GameObject fireballPrefab;   
+    public Transform attackPoint;
+    public GameObject projectilePrefab;
 
     private float currentHP;
     private Rigidbody2D rb;
@@ -109,22 +109,16 @@ public class MoveEnemy : MonoBehaviour, IDamageable
     public void PerformEnemyAttack()
     {
         if (attackPoint == null) return;
-        GameObject spearObj = Instantiate(fireballPrefab, attackPoint.position, Quaternion.identity);
-        GameObject feBulletObj = Instantiate(fireballPrefab, attackPoint.position, Quaternion.identity);
 
+        GameObject projObj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
         Vector2 throwDirection = movingRight ? Vector2.right : Vector2.left;
-        
-        SpearProjectile spear = spearObj.GetComponent<SpearProjectile>();
-        if (spear != null)
+        IProjectile projectile = projObj.GetComponent<IProjectile>();
+
+        if(projectile != null)
         {
-            spear.Setup(throwDirection, statData.damage);
+            projectile.Setup(throwDirection, statData.damage);
         }
 
-        FEBullet feBullet = feBulletObj.GetComponent<FEBullet>();
-        if(feBullet != null)
-        {
-            feBullet.Setup(throwDirection, statData.damage);
-        }
     }
 
     private IEnumerator AttackCooldownRoutine()

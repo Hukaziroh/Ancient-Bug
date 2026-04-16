@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpearProjectile : MonoBehaviour
+public class Spear : MonoBehaviour, IProjectile
 {
     [Header("투척 설정")]
     public float throwPowerX = 8f;   
@@ -57,13 +57,7 @@ public class SpearProjectile : MonoBehaviour
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            Destroy(gameObject);
-
-          
-            // Destroy(gameObject) 대신 아래 3줄을 쓰면 됩니다.
-            // rb.linearVelocity = Vector2.zero;
-            // rb.gravityScale = 0f;
-            // GetComponent<Collider2D>().enabled = false;
+            Destroy(gameObject);              
         }
     }
 }

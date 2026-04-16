@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class FEBullet : MonoBehaviour, IProjectile
+public class Punch : MonoBehaviour
 {
-    [Header("È­¿°±¸ ¼³Á¤")]
-    public float speed = 10f;      
-    public float lifetime = 3f;
+    [Header("ÆÝÄ¡ ¼³Á¤")]  
+    public float lifetime = 1f;
 
     float damage;
     Vector2 direction;
@@ -20,23 +19,21 @@ public class FEBullet : MonoBehaviour, IProjectile
         direction = moveDirection.normalized;
         damage = attackDamage;
 
-        if (direction.x < 0) transform.localScale = new Vector3(-1, 1, 1);
-
+        if (direction.x < 0)
+            transform.localScale = new Vector3(-1, 1, 1);
+        else
+            transform.localScale = new Vector3(1, 1, 1);
         Destroy(gameObject, lifetime);
     }
 
-    private void FixedUpdate()
-    {
-        rb.linearVelocity = direction * speed;
-    }
-
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             Player player = collision.GetComponent<Player>();
             if (player != null && player.isInvincible)
-            {             
+            {
                 Destroy(gameObject);
                 return;
             }
@@ -48,10 +45,6 @@ public class FEBullet : MonoBehaviour, IProjectile
             if (playerMovement != null) playerMovement.ApplyKnockback(transform);
 
             Destroy(gameObject);
-        }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            Destroy(gameObject);
-        }
+        }      
     }
 }
