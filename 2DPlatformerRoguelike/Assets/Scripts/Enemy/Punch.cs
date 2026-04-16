@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Punch : MonoBehaviour
+public class Punch : MonoBehaviour, IProjectile
 {
     [Header("ÆÝÄ¡ ¼³Á¤")]  
     public float lifetime = 1f;

@@ -14,7 +14,7 @@ public class Player : MonoBehaviour, IDamageable
 
     [Header("피격 및 무적 설정")]
     public float invincibilityDuration = 2f; 
-    public bool isInvincible { get;  set; }
+    public bool isInvincible { get; private set; }
 
     private Animator anim;
     private SpriteRenderer spriteRenderer;
@@ -77,7 +77,11 @@ public class Player : MonoBehaviour, IDamageable
         if (IsDead) return;
         IsDead = true;
 
-        if (anim != null) anim.SetTrigger("Dead");
+        if (anim != null)
+        {
+            anim.SetTrigger("Dead");
+            anim.SetBool("IsDead", true);
+        }
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerAttack>().enabled = false;
 
@@ -97,12 +101,12 @@ public class Player : MonoBehaviour, IDamageable
     public void AddGold(int amount)
     {
         currentGold += amount;
-        UIManager.Instance.UpdateGold(amount);
+        UIManager.Instance.UpdateGold(currentGold); 
     }
 
     public void AddStone(int amount)
     {
         currentStone += amount;
-        UIManager.Instance.UpdateStone(amount);
+        UIManager.Instance.UpdateStone(currentStone);
     }
 }

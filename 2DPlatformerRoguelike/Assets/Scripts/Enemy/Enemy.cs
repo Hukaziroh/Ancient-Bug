@@ -16,6 +16,9 @@ public class Enemy : MonoBehaviour, IDamageable
     public Transform attackPoint;
     public GameObject projectilePrefab;
 
+    [Header("보상 설정")]
+    public int dropGold = 50;
+
     private float currentHP;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -157,6 +160,13 @@ public class Enemy : MonoBehaviour, IDamageable
         if (coll != null) coll.enabled = false;
 
         rb.gravityScale = 0;
+
+        if(player!=null)
+        {
+            Player playerScript = GetComponent<Player>();
+            if(playerScript !=null)
+            playerScript.AddGold(dropGold);
+        }
         Destroy(gameObject, 2f);
     }
 

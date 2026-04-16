@@ -8,12 +8,15 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("공격 설정")]
     public float AttackDamage = 5f;
+    public GameObject FireBall;
 
     [Header("타격 판정 설정")]
     public Transform attackPoint;
     public Vector2 attackBoxSize = new Vector2(2f, 1f);
-    public LayerMask enemyLayer;   
+    public LayerMask enemyLayer;
 
+
+    private bool movingRight = false;
     Animator anim;
     Vector2 moveInput;
     private void Awake()
@@ -43,9 +46,11 @@ public class PlayerAttack : MonoBehaviour
     public void OnSkill(InputValue value)
     {
         if (UIManager.Instance.skillUI.isCooldown) return;
-        if(value.isPressed)
+          
+        if (value.isPressed)
         {
             anim.SetTrigger("IsSkill");
+          
             UIManager.Instance.skillUI.UseSkill(5f);
         }
     }
@@ -70,10 +75,5 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null) return;
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(attackPoint.position, attackBoxSize);
-    }
+    
 }
