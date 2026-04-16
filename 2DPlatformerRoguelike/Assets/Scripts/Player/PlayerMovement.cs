@@ -109,11 +109,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void OnDash(InputValue value)
-    {
+    {    
         if (value.isPressed && currentDashCount > 0)
         {
-            currentDashCount--; 
-         
+            currentDashCount--;
+            UIManager.Instance.dashSkillUI.UseSkill(dashCooldown);
+
             if (dashCoroutine != null)
             {
                 StopCoroutine(dashCoroutine);

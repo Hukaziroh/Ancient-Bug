@@ -3,6 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
+    [Header("스킬 UI")]
+    public SkillCooldownUI skillUI;
+
     [Header("공격 설정")]
     public float AttackDamage = 5f;
 
@@ -39,9 +42,11 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnSkill(InputValue value)
     {
+        if (UIManager.Instance.skillUI.isCooldown) return;
         if(value.isPressed)
         {
             anim.SetTrigger("IsSkill");
+            UIManager.Instance.skillUI.UseSkill(5f);
         }
     }
 

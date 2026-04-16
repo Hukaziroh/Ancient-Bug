@@ -3,13 +3,18 @@ using UnityEngine.SceneManagement;
 using System.Collections;
 public class Player : MonoBehaviour, IDamageable
 {
+   
     [Header("체력 설정")]
     public float maxHP = 100f;
     private float currentHP;
 
+    [Header("보유 재화")]
+    public int currentGold = 0;
+    public int currentStone = 0;
+
     [Header("피격 및 무적 설정")]
     public float invincibilityDuration = 2f; 
-    public bool isInvincible { get; private set; }
+    public bool isInvincible { get;  set; }
 
     private Animator anim;
     private SpriteRenderer spriteRenderer;
@@ -23,18 +28,19 @@ public class Player : MonoBehaviour, IDamageable
     void Start()
     {
         currentHP = maxHP;
+        UIManager.Instance.UpdateHp(currentHP, maxHP);
+        UIManager.Instance.UpdateGold(currentGold);
+        UIManager.Instance.UpdateStone(currentStone);
     }
 
     public void TakeDamage(float damage)
-    {
-        if (isInvincible || IsDead) return;
-
+    {    
         PlayerMovement pm = GetComponent<PlayerMovement>();
         bool isDashing = (pm != null && pm.isDashing);
 
         if (isInvincible || IsDead || isDashing) return;
         currentHP -= damage;
-        Debug.Log($"플레이어 피격! 남은 체력: {currentHP} (-{damage})");
+        UIManager.Instance.UpdateHp(currentHP, maxHP);
 
         if (currentHP <= 0)
         {
@@ -79,11 +85,24 @@ public class Player : MonoBehaviour, IDamageable
         if (rb != null)
         {
             rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 0f;
         }
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         //SceneManager.LoadScene("Lobby");
 
         // TODO: 기획서에 명시된 대로 해당 회차 골드 소멸 및 로비(마을) 귀환 로직 추가 예정
+    }
+
+    public void AddGold(int amount)
+    {
+        currentGold += amount;
+        UIManager.Instance.UpdateGold(amount);
+    }
+
+    public void AddStone(int amount)
+    {
+        currentStone += amount;
+        UIManager.Instance.UpdateStone(amount);
     }
 }

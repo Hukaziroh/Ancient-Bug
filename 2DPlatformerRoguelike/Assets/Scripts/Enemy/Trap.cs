@@ -7,22 +7,27 @@ public class Trap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        ApplyTrapEffect(collision);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        ApplyTrapEffect(collision);
+    }
+
+    private void ApplyTrapEffect(Collider2D collision)
+    {
+       
         if (collision.CompareTag("Player"))
         {
             Player player = collision.GetComponent<Player>();
             if (player != null && player.isInvincible) return;
 
             IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null)
-            {
-                damageable.TakeDamage(trapDamage);
-            }
+            if (damageable != null) damageable.TakeDamage(trapDamage);
 
             PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
-            if (playerMovement != null)
-            {
-                playerMovement.ApplyKnockback(transform);
-            }
+            if (playerMovement != null) playerMovement.ApplyKnockback(transform);
         }
 
        
