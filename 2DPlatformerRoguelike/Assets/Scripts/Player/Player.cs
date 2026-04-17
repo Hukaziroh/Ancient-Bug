@@ -101,12 +101,38 @@ public class Player : MonoBehaviour, IDamageable
     public void AddGold(int amount)
     {
         currentGold += amount;
-        UIManager.Instance.UpdateGold(currentGold); 
+        UIManager.Instance.UpdateGold(currentGold);
+        Debug.Log("³» ¸Ó´Ï: " + currentGold);
     }
 
     public void AddStone(int amount)
     {
         currentStone += amount;
         UIManager.Instance.UpdateStone(currentStone);
+    }
+
+    public bool SpendGold(int amount)
+    {
+        if(currentGold >=amount)
+        {
+            currentGold -= amount;
+            UIManager.Instance.UpdateGold(currentGold);
+            return true;
+        }
+        return false;
+    }
+
+    public void Heal(float amount)
+    {
+        currentHP += amount;
+        if (currentHP > maxHP) currentHP = maxHP;
+        UIManager.Instance.UpdateHp(currentHP, maxHP);
+    }
+
+    public void IncreaseMaxHp(float amount)
+    {
+        maxHP += amount;
+        currentHP += amount;
+        UIManager.Instance.UpdateHp(currentHP, maxHP);
     }
 }

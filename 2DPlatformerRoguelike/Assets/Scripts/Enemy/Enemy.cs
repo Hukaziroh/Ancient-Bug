@@ -161,11 +161,15 @@ public class Enemy : MonoBehaviour, IDamageable
 
         rb.gravityScale = 0;
 
-        if(player!=null)
+        GameObject activePlayer = GameObject.FindGameObjectWithTag("Player");
+
+        if (activePlayer != null)
         {
-            Player playerScript = GetComponent<Player>();
-            if(playerScript !=null)
-            playerScript.AddGold(dropGold);
+            Player playerScript = activePlayer.GetComponent<Player>();
+            if (playerScript != null)
+            {             
+                playerScript.AddGold(dropGold);
+            }
         }
         Destroy(gameObject, 2f);
     }
