@@ -68,6 +68,7 @@
     <Compile Include="Assets\Scripts\Enemy\TentacleFlower.cs" />
     <Compile Include="Assets\Scripts\Enemy\Spear.cs" />
     <Compile Include="Assets\Scripts\Manager\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Enemy\TurretEnemy.cs" />
     <Compile Include="Assets\Scripts\Manager\RoomManager.cs" />
     <Compile Include="Assets\Scripts\Enemy\Larva.cs" />
     <Compile Include="Assets\Scripts\Manager\SkillCooldownUI.cs" />
