@@ -723,7 +723,7 @@ MonoBehaviour:
   - {fileID: 7723910410411573809, guid: 63146b84bd2a0bb44a0bec680de387e8, type: 3}
   - {fileID: 5562402576830868658, guid: 0eaf711e0917a064bb06bcac3ee128d0, type: 3}
   bossRoomPrefab: {fileID: 5563899501905041970, guid: dde40dad15e6a81469543d408d4b77a7, type: 3}
-  totalRooms: 6
+  totalRooms: 5
   player: {fileID: 1125496829}
   fadeCanvasGroup: {fileID: 688672335}
   fadeDuration: 0.5
@@ -914,9 +914,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2535267768316549387, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2007376001}
+    - target: {fileID: 2535267768316549387, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyMaxHp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5776448444298593076, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2007376001}
+    - target: {fileID: 5776448444298593076, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyHeal
+      objectReference: {fileID: 0}
     - target: {fileID: 7340253681073620548, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
       propertyPath: m_Name
       value: ShopCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8149221068648190067, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2007376001}
+    - target: {fileID: 8149221068648190067, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: BuyAttackUp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -193,12 +193,15 @@ MonoBehaviour:
   castDistance: 0.1
   groundLayer:
     serializedVersion: 2
-    m_Bits: 16
+    m_Bits: 512
   dashSpeed: 20
   dashDuration: 0.13
   maxDashCount: 2
   dashCooldown: 1
   glideFallSpeed: 2
+  knockbackForce: 3
+  knockbackUpForce: 2
+  knockbackDuration: 0.2
 --- !u!114 &9039149228464186564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -211,6 +214,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 226a25d61cacc704da4aaf45c1a6c8c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  maxHP: 100
+  currentGold: 0
+  currentStone: 0
+  invincibilityDuration: 2
 --- !u!50 &1224152972709540098
 Rigidbody2D:
   serializedVersion: 5
@@ -235,7 +242,7 @@ Rigidbody2D:
     serializedVersion: 2
     m_Bits: 0
   m_Interpolate: 0
-  m_SleepingMode: 1
+  m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &6955073322256078342
@@ -363,9 +370,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a901ae5921593c4f943f6b936462962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  skillUI: {fileID: 0}
   AttackDamage: 5
+  FireBall: {fileID: 0}
   attackPoint: {fileID: 1921008260171613488}
-  attackRange: 1
+  attackBoxSize: {x: 2, y: 1}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128

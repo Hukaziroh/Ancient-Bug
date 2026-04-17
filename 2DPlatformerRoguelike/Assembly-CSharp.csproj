@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\Enemy\FRBullet.cs" />
     <Compile Include="Assets\Scripts\Player\ClearTrigger.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerSkill.cs" />
+    <Compile Include="Assets\Scripts\Enemy\FREnemy.cs" />
     <Compile Include="Assets\Scripts\Player\Player.cs" />
     <Compile Include="Assets\Scripts\Enemy\FEBullet.cs" />
     <Compile Include="Assets\Scripts\Manager\Door.cs" />

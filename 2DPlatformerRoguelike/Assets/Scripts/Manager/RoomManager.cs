@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class RoomManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class RoomManager : MonoBehaviour
     public GameObject bossRoomPrefab;
 
     [Header("던전 진행도 설정")]
-    public int totalRooms = 5;
+    public int totalRooms = 6;
     public Transform player;
 
     [Header("페이드 연출 설정")]
@@ -20,7 +21,9 @@ public class RoomManager : MonoBehaviour
 
     private GameObject currentRoom;
     private int currentRoomCount = 0;
-    private bool isTransitioning = false; 
+    private bool isTransitioning = false;
+
+    private List<GameObject> shuffledRooms = new List<GameObject>();
 
     private void Awake()
     {
@@ -30,15 +33,28 @@ public class RoomManager : MonoBehaviour
     private void Start()
     {
         if (fadeCanvasGroup != null) fadeCanvasGroup.alpha = 1f;
+
+        ShuffleRandomRooms();
+
         LoadNextRoom();
     }
 
-    public void LoadNextRoom()
-    {
-       
-        if (isTransitioning || currentRoomCount >= totalRooms) return;
+    private void ShuffleRandomRooms()
+    {       
+        shuffledRooms.AddRange(randomRoomPrefabs);
+      
+        for (int i = 0; i < shuffledRooms.Count; i++)
+        {
+            GameObject temp = shuffledRooms[i];
+            int randomIndex = Random.Range(i, shuffledRooms.Count);
+            shuffledRooms[i] = shuffledRooms[randomIndex];
+            shuffledRooms[randomIndex] = temp;
+        }
 
-       
+    }
+    public void LoadNextRoom()
+    {     
+        if (isTransitioning || currentRoomCount >= totalRooms) return;  
         StartCoroutine(TransitionRoomRoutine());
     }
 
@@ -57,20 +73,33 @@ public class RoomManager : MonoBehaviour
             }
             fadeCanvasGroup.alpha = 1f;
         }
-           
-       
-       
 
-    
         if (currentRoom != null) Destroy(currentRoom);
 
         GameObject roomToLoad = null;
         currentRoomCount++;
 
-        if (currentRoomCount == 1) roomToLoad = startRoomPrefab;
-        else if (currentRoomCount < totalRooms) roomToLoad = randomRoomPrefabs[Random.Range(0, randomRoomPrefabs.Length)];
-        else if (currentRoomCount == totalRooms) roomToLoad = bossRoomPrefab;
-
+        if (currentRoomCount == 1)
+        {
+            roomToLoad = startRoomPrefab;
+        }
+        else if (currentRoomCount < totalRooms)
+        {          
+            if (shuffledRooms.Count > 0)
+            {
+                roomToLoad = shuffledRooms[0];
+                shuffledRooms.RemoveAt(0);
+            }
+            else
+            {               
+                roomToLoad = randomRoomPrefabs[Random.Range(0, randomRoomPrefabs.Length)];
+            }
+        }
+        else if (currentRoomCount == totalRooms)
+        {
+            roomToLoad = bossRoomPrefab;
+        }
+      
         currentRoom = Instantiate(roomToLoad, Vector3.zero, Quaternion.identity);
 
         Transform spawnPoint = currentRoom.transform.Find("SpawnPoint");

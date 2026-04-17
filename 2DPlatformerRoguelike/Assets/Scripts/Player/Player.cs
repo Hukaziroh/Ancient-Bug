@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.InputSystem;
 public class Player : MonoBehaviour, IDamageable
 {
    
@@ -84,6 +85,12 @@ public class Player : MonoBehaviour, IDamageable
         }
         GetComponent<PlayerMovement>().enabled = false;
         GetComponent<PlayerAttack>().enabled = false;
+
+        PlayerInput playerInput = GetComponent<PlayerInput>();
+        if (playerInput != null)
+        {
+            playerInput.enabled = false;
+        }
 
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         if (rb != null)

@@ -1,20 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour, IDamageable
+public class FREnemy : MonoBehaviour, IDamageable
 {
     [Header("스탯 및 설정")]
     public EnemyStatData statData;
 
     [Header("패트롤 설정")]
-    public Transform groundDetection; 
-    public float rayDistance = 1f;   
+    public Transform groundDetection;
+    public float rayDistance = 1f;
     public LayerMask groundLayer;
 
     [Header("공격 설정")]
-    public float attackRange = 5f;      
+    public float attackRange = 5f;
     public Transform attackPoint;
     public GameObject projectilePrefab;
+    public float breathDuration = 2f;
 
     [Header("보상 설정")]
     public int dropGold = 50;
@@ -29,8 +30,6 @@ public class Enemy : MonoBehaviour, IDamageable
     private bool movingRight = false;
     private bool isAttacking = false;
 
-   
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -42,22 +41,23 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (statData != null) currentHP = statData.maxHP;
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if(playerObj != null)
+        if (playerObj != null)
         {
             player = playerObj.transform;
         }
     }
 
     private void Update()
-    {
-        if (isDead || isAttacking) return;   
-        
-        if(player != null && Vector2.Distance(transform.position,player.position) <= attackRange)
+    {      
+        if (isDead || isAttacking) return;
+
+        if (player != null && Vector2.Distance(transform.position, player.position) <= attackRange)
         {
-            AttackPlayer();
+            StartCoroutine(BreathAttackRoutine());
             return;
         }
-        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, rayDistance, groundLayer);  
+
+        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, rayDistance, groundLayer);
         Vector2 forwardDirection = movingRight ? Vector2.right : Vector2.left;
         RaycastHit2D wallInfo = Physics2D.Raycast(groundDetection.position, forwardDirection, 0.1f, groundLayer);
 
@@ -71,8 +71,8 @@ public class Enemy : MonoBehaviour, IDamageable
     private void FixedUpdate()
     {
         if (isDead) return;
-    
-        if(isAttacking)
+
+        if (isAttacking)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             return;
@@ -83,53 +83,55 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     private void Flip()
-    {     
+    {
         movingRight = !movingRight;
-       
+
         Vector3 currentScale = transform.localScale;
         currentScale.x *= -1;
         transform.localScale = currentScale;
     }
-
-    void AttackPlayer()
+    private void FacePlayer()
     {
-        isAttacking = true;
-
-        if (anim != null)
-        {
-            anim.SetBool("IsMoving", false);
-            anim.SetTrigger("Attack");
-        }
-
+        if (player == null) return;
         bool isPlayerOnRight = player.position.x > transform.position.x;
-        if(isPlayerOnRight != movingRight)
+   
+        if (isPlayerOnRight != movingRight)
         {
             Flip();
         }
-        StartCoroutine(AttackCooldownRoutine());
     }
 
-    public void PerformEnemyAttack()
+    private IEnumerator BreathAttackRoutine()
     {
-        if (attackPoint == null) return;
+        isAttacking = true; 
 
-        GameObject projObj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
-        Vector2 throwDirection = movingRight ? Vector2.right : Vector2.left;
-        IProjectile projectile = projObj.GetComponent<IProjectile>();
+        rb.linearVelocity = Vector2.zero; 
+        if (anim != null) anim.SetBool("IsMoving", false);
 
-        if(projectile != null)
+        FacePlayer();
+
+        if (anim != null) anim.SetTrigger("Attack");
+
+        if (projectilePrefab != null && attackPoint != null)
         {
-            projectile.Setup(throwDirection, statData.damage);
+            GameObject projObj = Instantiate(projectilePrefab, attackPoint.position, attackPoint.rotation, attackPoint);
+            Vector2 throwDirection = movingRight ? Vector2.right : Vector2.left;
+            IProjectile projectile = projObj.GetComponent<IProjectile>();
+
+            if (projectile != null)
+            {
+                projectile.Setup(throwDirection, statData.damage);
+            }
         }
 
-    }
+     
+        yield return new WaitForSeconds(breathDuration);
+   
+        yield return new WaitForSeconds(1.5f);
 
-    private IEnumerator AttackCooldownRoutine()
-    {
-        yield return new WaitForSeconds(1.5f); 
         isAttacking = false;
-
     }
+
     public void TakeDamage(float damage)
     {
         if (isDead) return;
@@ -156,11 +158,8 @@ public class Enemy : MonoBehaviour, IDamageable
         if (anim != null) anim.SetTrigger("Dead");
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
-        Collider2D[] allColliders = GetComponentsInChildren<Collider2D>();
-        foreach (Collider2D coll in allColliders)
-        {
-            coll.enabled = false;
-        }
+        Collider2D coll = GetComponent<Collider2D>();
+        if (coll != null) coll.enabled = false;
 
         rb.gravityScale = 0;
 
@@ -170,7 +169,7 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             Player playerScript = activePlayer.GetComponent<Player>();
             if (playerScript != null)
-            {             
+            {
                 playerScript.AddGold(dropGold);
             }
         }

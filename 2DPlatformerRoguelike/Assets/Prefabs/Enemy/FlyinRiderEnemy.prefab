@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 551697236710804339}
   - component: {fileID: 1234682760159469801}
   - component: {fileID: 457265830145468082}
-  - component: {fileID: 1140905462176955266}
+  - component: {fileID: 6033507944008676532}
   m_Layer: 7
   m_Name: FlyinRiderEnemy
   m_TagString: Untagged
@@ -192,7 +192,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &1140905462176955266
+--- !u!114 &6033507944008676532
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,18 +201,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 4067550231079066206}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32d55ae099013ca48a19e85374d30a59, type: 3}
+  m_Script: {fileID: 11500000, guid: 61a6ec253f4fc374880896c1c023bb79, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoveEnemy
+  m_EditorClassIdentifier: Assembly-CSharp::FREnemy
   statData: {fileID: 11400000, guid: 5594655a5527b5f4ba3e3609d3801ebf, type: 2}
   groundDetection: {fileID: 4737303021458434057}
   rayDistance: 1
   groundLayer:
     serializedVersion: 2
     m_Bits: 512
-  attackRange: 3
+  attackRange: 2
   attackPoint: {fileID: 358314434839594530}
   projectilePrefab: {fileID: 9202960523608745381, guid: f0a3df94794babc49a29e8974b5d0ab3, type: 3}
+  breathDuration: 2
+  dropGold: 50
 --- !u!1 &5936191903976445291
 GameObject:
   m_ObjectHideFlags: 0
