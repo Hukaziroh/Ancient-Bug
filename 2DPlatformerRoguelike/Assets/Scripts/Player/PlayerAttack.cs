@@ -30,6 +30,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnAttack(InputValue value)
     {
+        if (Time.timeScale == 0f) return;
         if (value.isPressed)
         {
             if (moveInput.y > 0.5f)
@@ -45,6 +46,7 @@ public class PlayerAttack : MonoBehaviour
 
     public void OnSkill(InputValue value)
     {
+        if (Time.timeScale == 0f) return;
         if (UIManager.Instance.skillUI.isCooldown) return;
           
         if (value.isPressed)

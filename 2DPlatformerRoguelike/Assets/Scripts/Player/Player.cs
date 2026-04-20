@@ -109,7 +109,6 @@ public class Player : MonoBehaviour, IDamageable
     {
         currentGold += amount;
         UIManager.Instance.UpdateGold(currentGold);
-        Debug.Log("³» ¸Ó´Ï: " + currentGold);
     }
 
     public void AddStone(int amount)

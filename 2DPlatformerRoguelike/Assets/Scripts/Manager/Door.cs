@@ -7,6 +7,7 @@ public class Door : MonoBehaviour
     SpriteRenderer spriteRenderer;
 
     private bool isOpened = false;
+    private bool wasUsed = false;
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -34,13 +35,14 @@ public class Door : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            if (RoomManager.Instance != null && RoomManager.Instance.remainingEnemies <= 0)
+            if (isOpened && !wasUsed && !RoomManager.Instance.isTransitioning)
             {
-                RoomManager.Instance.LoadNextRoom();
-            }
-            else
-            {
-                Debug.Log("아직 몬스터가 남아있어 문이 열리지 않습니다!");
+                wasUsed = true; 
+
+                if (RewardManager.Instance != null)
+                {
+                    RewardManager.Instance.ShowRewardUI();
+                }
             }
         }
     }

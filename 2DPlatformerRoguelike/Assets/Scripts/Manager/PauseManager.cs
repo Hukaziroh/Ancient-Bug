@@ -54,8 +54,26 @@ public class PauseManager : MonoBehaviour
     public void ResumeGame()
     {
         isPaused = false;
-        pausePanel.SetActive(false);
-        Time.timeScale = 1f;
+        if (pausePanel != null) pausePanel.SetActive(false);
+
+        bool isRewardOpen = false;
+        bool isShopOpen = false;
+
+        if (RewardManager.Instance != null && RewardManager.Instance.rewardPanel != null)
+        {
+            isRewardOpen = RewardManager.Instance.rewardPanel.activeSelf;
+
+        }
+
+        if (ShopManager.Instance != null && ShopManager.Instance.shopPanel != null)
+        {
+            isShopOpen = ShopManager.Instance.shopPanel.activeSelf;
+        }
+
+        if (!isRewardOpen && !isShopOpen)
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     public void RestartGame()

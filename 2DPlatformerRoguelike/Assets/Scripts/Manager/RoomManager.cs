@@ -22,7 +22,7 @@ public class RoomManager : MonoBehaviour
 
     private GameObject currentRoom;
     private int currentRoomCount = 0;
-    private bool isTransitioning = false;
+    public bool isTransitioning = false;
 
     private List<GameObject> shuffledRooms = new List<GameObject>();
 
@@ -103,8 +103,14 @@ public class RoomManager : MonoBehaviour
       
         currentRoom = Instantiate(roomToLoad, Vector3.zero, Quaternion.identity);
 
-        remainingEnemies = currentRoom.GetComponentsInChildren<Enemy>().Length +
-                       currentRoom.GetComponentsInChildren<FREnemy>().Length;
+        int normalEnemies = currentRoom.GetComponentsInChildren<Enemy>().Length;
+        int fireEnemies = currentRoom.GetComponentsInChildren<FREnemy>().Length;
+        remainingEnemies = normalEnemies + fireEnemies;
+
+        if (UIManager.Instance != null)
+        {
+            UIManager.Instance.UpdateEnemy(remainingEnemies);
+        }
 
         Transform spawnPoint = currentRoom.transform.Find("SpawnPoint");
         if (spawnPoint != null) player.position = spawnPoint.position;
@@ -129,11 +135,6 @@ public class RoomManager : MonoBehaviour
     public void OnEnemyKilled()
     {
         remainingEnemies--;
-        Debug.Log("남은 몬스터: " + remainingEnemies);
-
-        if (remainingEnemies <= 0)
-        {
-            Debug.Log("방 클리어! 문이 열립니다.");         
-        }
+        UIManager.Instance.UpdateEnemy(remainingEnemies);
     }
 }

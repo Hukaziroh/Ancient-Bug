@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI goldText;
     public TextMeshProUGUI stoneText;
 
+    [Header("Àû UI")]
+    public TextMeshProUGUI enemyText;
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -39,5 +41,10 @@ public class UIManager : MonoBehaviour
     public void UpdateStone(int amount)
     {
         if (stoneText != null) stoneText.text = amount.ToString();
+    }
+
+    public void UpdateEnemy(int amount)
+    {
+        if (enemyText != null) enemyText.text = amount.ToString();
     }
 }

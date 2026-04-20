@@ -97,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnJump(InputValue value)
     {
+        if (Time.timeScale == 0f) return;
         if (isDashing) return;
 
         isJumpHolding = value.isPressed;
@@ -109,7 +110,8 @@ public class PlayerMovement : MonoBehaviour
     }
 
     public void OnDash(InputValue value)
-    {    
+    {
+        if (Time.timeScale == 0f) return;
         if (value.isPressed && currentDashCount > 0)
         {
             currentDashCount--;
