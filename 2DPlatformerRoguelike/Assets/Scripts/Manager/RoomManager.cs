@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class RoomManager : MonoBehaviour
 {
     public static RoomManager Instance;
+    public int remainingEnemies = 0;
 
     [Header("방 프리팹 설정")]
     public GameObject startRoomPrefab;
@@ -102,6 +103,9 @@ public class RoomManager : MonoBehaviour
       
         currentRoom = Instantiate(roomToLoad, Vector3.zero, Quaternion.identity);
 
+        remainingEnemies = currentRoom.GetComponentsInChildren<Enemy>().Length +
+                       currentRoom.GetComponentsInChildren<FREnemy>().Length;
+
         Transform spawnPoint = currentRoom.transform.Find("SpawnPoint");
         if (spawnPoint != null) player.position = spawnPoint.position;
        
@@ -120,5 +124,16 @@ public class RoomManager : MonoBehaviour
         fadeCanvasGroup.alpha = 0f;
 
         isTransitioning = false; 
+    }
+
+    public void OnEnemyKilled()
+    {
+        remainingEnemies--;
+        Debug.Log("남은 몬스터: " + remainingEnemies);
+
+        if (remainingEnemies <= 0)
+        {
+            Debug.Log("방 클리어! 문이 열립니다.");         
+        }
     }
 }

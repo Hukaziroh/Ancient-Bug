@@ -154,7 +154,14 @@ public class FREnemy : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        if (isDead) return;
         isDead = true;
+
+        if (RoomManager.Instance != null)
+        {
+            RoomManager.Instance.OnEnemyKilled();
+        }
+
         if (anim != null) anim.SetTrigger("Dead");
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 

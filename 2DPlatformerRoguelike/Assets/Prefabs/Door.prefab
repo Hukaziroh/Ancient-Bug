@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1300576200844854855}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 32.88, y: 0.82, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
@@ -151,3 +151,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20fac5711b46ae84c974013715712f25, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Door
+  openDoorSprite: {fileID: -5586407845460320746, guid: c6d8fb77b2bd00b42bf2878d974c71e3, type: 3}
