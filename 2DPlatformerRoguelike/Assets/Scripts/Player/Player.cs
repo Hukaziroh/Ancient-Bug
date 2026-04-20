@@ -142,4 +142,15 @@ public class Player : MonoBehaviour, IDamageable
         currentHP += amount;
         UIManager.Instance.UpdateHp(currentHP, maxHP);
     }
+
+    public void OnPause(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            if (PauseManager.Instance != null)
+            {
+                PauseManager.Instance.TogglePause();
+            }
+        }
+    }
 }
