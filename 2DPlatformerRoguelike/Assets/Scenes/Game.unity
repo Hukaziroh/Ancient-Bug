@@ -2104,13 +2104,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomManager
   remainingEnemies: 0
-  startRoomPrefab: {fileID: 1872253693160420788, guid: 2d9e9cdd22716ec4f8673f460fe404b2, type: 3}
-  randomRoomPrefabs:
-  - {fileID: 806265722331558907, guid: 2e56ff782f331624ca1e088ee20af013, type: 3}
-  - {fileID: 1788271142448925299, guid: e38dd274b7c3212479816e69ad497698, type: 3}
-  - {fileID: 7723910410411573809, guid: 63146b84bd2a0bb44a0bec680de387e8, type: 3}
-  - {fileID: 5562402576830868658, guid: 0eaf711e0917a064bb06bcac3ee128d0, type: 3}
-  bossRoomPrefab: {fileID: 5563899501905041970, guid: dde40dad15e6a81469543d408d4b77a7, type: 3}
+  levels:
+  - levelName: 1
+    startRoomPrefab: {fileID: 5563899501905041970, guid: dde40dad15e6a81469543d408d4b77a7, type: 3}
+    randomRoomPrefabs:
+    - {fileID: 1872253693160420788, guid: 2d9e9cdd22716ec4f8673f460fe404b2, type: 3}
+    - {fileID: 806265722331558907, guid: 2e56ff782f331624ca1e088ee20af013, type: 3}
+    - {fileID: 1872253693160420788, guid: 2d9e9cdd22716ec4f8673f460fe404b2, type: 3}
+    - {fileID: 806265722331558907, guid: 2e56ff782f331624ca1e088ee20af013, type: 3}
+    bossRoomPrefab: {fileID: 5563899501905041970, guid: dde40dad15e6a81469543d408d4b77a7, type: 3}
+  - levelName: 2
+    startRoomPrefab: {fileID: 3942557174588525337, guid: 4c590528dcbf021428a8b708ed876cd0, type: 3}
+    randomRoomPrefabs:
+    - {fileID: 327576544764449309, guid: 28cea4554aa78fd4bbd54d725a705776, type: 3}
+    bossRoomPrefab: {fileID: 327576544764449309, guid: 28cea4554aa78fd4bbd54d725a705776, type: 3}
+  currentLevelIndex: 0
   totalRooms: 5
   player: {fileID: 1125496829}
   fadeCanvasGroup: {fileID: 688672335}
@@ -3689,6 +3697,10 @@ PrefabInstance:
     - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: skillRange
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
+      propertyPath: AttackDamage
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: lightingPrefab
