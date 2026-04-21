@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d55ae099013ca48a19e85374d30a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveEnemy
-  statData: {fileID: 11400000, guid: 5594655a5527b5f4ba3e3609d3801ebf, type: 2}
+  statData: {fileID: 11400000, guid: 2e4c4930599fc50418adf7f6e2808b03, type: 2}
   groundDetection: {fileID: 6829715793235339599}
   rayDistance: 1
   groundLayer:
@@ -140,6 +140,7 @@ MonoBehaviour:
   attackRange: 1
   attackPoint: {fileID: 8507136749178920903}
   projectilePrefab: {fileID: 8673902963340712079, guid: 516107e9c29d318429552a83634cc980, type: 3}
+  dropGold: 50
 --- !u!61 &1640290915408215769
 BoxCollider2D:
   m_ObjectHideFlags: 0

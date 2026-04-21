@@ -150,6 +150,9 @@ PrefabInstance:
       addedObject: {fileID: 9039149228464186564}
     - targetCorrespondingSourceObject: {fileID: 7738907795435258547, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 3226757533140683677}
+    - targetCorrespondingSourceObject: {fileID: 7738907795435258547, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1224152972709540098}
     - targetCorrespondingSourceObject: {fileID: 7738907795435258547, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
       insertIndex: -1
@@ -160,9 +163,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7738907795435258547, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1086461144144617202}
-    - targetCorrespondingSourceObject: {fileID: 7738907795435258547, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3226757533140683677}
   m_SourcePrefab: {fileID: 100100000, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
 --- !u!4 &7270210267545786664 stripped
 Transform:
@@ -218,6 +218,26 @@ MonoBehaviour:
   currentGold: 0
   currentStone: 0
   invincibilityDuration: 2
+--- !u!114 &3226757533140683677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7270210267545786669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a901ae5921593c4f943f6b936462962, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  skillUI: {fileID: 0}
+  AttackDamage: 10
+  FireBall: {fileID: 0}
+  attackPoint: {fileID: 1921008260171613488}
+  attackBoxSize: {x: 2, y: 1}
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!50 &1224152972709540098
 Rigidbody2D:
   serializedVersion: 5
@@ -358,23 +378,3 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &3226757533140683677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7270210267545786669}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4a901ae5921593c4f943f6b936462962, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
-  skillUI: {fileID: 0}
-  AttackDamage: 5
-  FireBall: {fileID: 0}
-  attackPoint: {fileID: 1921008260171613488}
-  attackBoxSize: {x: 2, y: 1}
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128

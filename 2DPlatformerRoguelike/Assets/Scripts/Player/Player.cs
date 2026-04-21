@@ -100,11 +100,17 @@ public class Player : MonoBehaviour, IDamageable
         }
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
-        //SceneManager.LoadScene("Lobby");
+        StartCoroutine(GoToLobbyRoutine());
 
         // TODO: 기획서에 명시된 대로 해당 회차 골드 소멸 및 로비(마을) 귀환 로직 추가 예정
     }
 
+    private System.Collections.IEnumerator GoToLobbyRoutine()
+    {
+        yield return new WaitForSeconds(3f); 
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
+
+    }
     public void AddGold(int amount)
     {
         currentGold += amount;

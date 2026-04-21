@@ -1,5 +1,9 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine.Rendering;
+using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -15,14 +19,22 @@ public class PlayerAttack : MonoBehaviour
     public Vector2 attackBoxSize = new Vector2(2f, 1f);
     public LayerMask enemyLayer;
 
+    [Header("번개 스킬 설정")]
+    public GameObject lightningPrefab;
+    public float skillDamage = 20f;
+    public float skillRange = 10f;
+    public int maxTargetCount = 3;
+    public float lightingYOffset = 1.5f;
+    public float lightningStrikeDelay = 0.3f;
 
-    private bool movingRight = false;
     Animator anim;
     Vector2 moveInput;
+
     private void Awake()
     {
         anim = GetComponent<Animator>();
     }
+
     public void OnMove(InputValue value)
     {
         moveInput = value.Get<Vector2>();
@@ -31,6 +43,7 @@ public class PlayerAttack : MonoBehaviour
     public void OnAttack(InputValue value)
     {
         if (Time.timeScale == 0f) return;
+
         if (value.isPressed)
         {
             if (moveInput.y > 0.5f)
@@ -48,27 +61,23 @@ public class PlayerAttack : MonoBehaviour
     {
         if (Time.timeScale == 0f) return;
         if (UIManager.Instance.skillUI.isCooldown) return;
-          
+
         if (value.isPressed)
         {
             anim.SetTrigger("IsSkill");
-          
             UIManager.Instance.skillUI.UseSkill(5f);
+            PerformSkill();
         }
     }
 
-   
     public void PerformAttack()
     {
         if (attackPoint == null) return;
 
-       
-        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, attackBoxSize,0f, enemyLayer);
+        Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, attackBoxSize, 0f, enemyLayer);
 
-     
         foreach (Collider2D enemy in hitEnemies)
         {
-           
             IDamageable damageable = enemy.GetComponent<IDamageable>();
             if (damageable != null)
             {
@@ -77,5 +86,54 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    
+    public void PerformSkill()
+    {
+        if (lightningPrefab == null) return;
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, skillRange, enemyLayer);
+        if (hitEnemies.Length == 0) return;
+
+        List<Collider2D> sortedEnemies = hitEnemies.OrderBy(enemy =>
+            Vector2.Distance(transform.position, enemy.transform.position)).ToList();
+
+        int targetCount = Mathf.Min(maxTargetCount, sortedEnemies.Count);
+
+        for (int i = 0; i < targetCount; i++)
+        {
+            Transform target = sortedEnemies[i].transform;
+            Vector3 spawnPosition = new Vector3(target.position.x, target.position.y + lightingYOffset, 0f);
+
+            GameObject lightning = Instantiate(lightningPrefab, spawnPosition, Quaternion.identity);
+            Destroy(lightning, 1.6f);
+
+            float finalDamage = AttackDamage + skillDamage;
+
+            StartCoroutine(DelayedDamageRoutine(target, lightning, finalDamage, lightningStrikeDelay));
+        }
+    }
+
+    private System.Collections.IEnumerator DelayedDamageRoutine(Transform target, GameObject lightning, float damage, float delay)
+    {
+        float timer = 0f;
+
+        while (timer < delay)
+        {
+            yield return new WaitForFixedUpdate();
+            timer += Time.fixedDeltaTime;
+
+            if (target != null && lightning != null)
+            {
+                lightning.transform.position = new Vector3(target.position.x, target.position.y + lightingYOffset, 0f);
+            }
+        }
+
+        if (target != null)
+        {
+            IDamageable damageable = target.GetComponent<IDamageable>();
+            if (damageable != null)
+            {
+                damageable.TakeDamage(damage);
+            }
+        }
+    }
 }

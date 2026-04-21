@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 999d82169ae7f484a887c274b97c7036, type: 3}
-  m_Name: DummyStat
+  m_Name: FE
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatData
   enemyName: Dummy
-  maxHP: 50
+  maxHP: 70
   damage: 10
   moveSpeed: 3

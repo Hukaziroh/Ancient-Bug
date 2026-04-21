@@ -204,7 +204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61a6ec253f4fc374880896c1c023bb79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FREnemy
-  statData: {fileID: 11400000, guid: 5594655a5527b5f4ba3e3609d3801ebf, type: 2}
+  statData: {fileID: 11400000, guid: 52d812f87879c2945a82bee068cc9c7e, type: 2}
   groundDetection: {fileID: 4737303021458434057}
   rayDistance: 1
   groundLayer:
