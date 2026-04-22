@@ -113,16 +113,17 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (attackPoint == null) return;
 
-        GameObject projObj = EnemyProjectilePool.Instance.spearPool.Get();
+        GameObject projObj = EnemyProjectilePool.Instance.GetProjectile(projectilePrefab);
+
+        if (projObj == null) return; // 에러 방지
+
         projObj.transform.position = attackPoint.position;
         projObj.transform.rotation = Quaternion.identity;
+
         Vector2 throwDirection = movingRight ? Vector2.right : Vector2.left;
         IProjectile projectile = projObj.GetComponent<IProjectile>();
 
-        if(projectile != null)
-        {
-            projectile.Setup(throwDirection, statData.damage);
-        }
+        if (projectile != null) projectile.Setup(throwDirection, statData.damage);
 
     }
 
@@ -203,4 +204,6 @@ public class Enemy : MonoBehaviour, IDamageable
             Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         }
     }
+
+  
 }

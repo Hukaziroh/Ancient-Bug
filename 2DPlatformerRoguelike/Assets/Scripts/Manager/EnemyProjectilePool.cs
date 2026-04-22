@@ -44,6 +44,14 @@ public class EnemyProjectilePool : MonoBehaviour
         obj.GetComponent<FRBullet>().SetManagedPool(frBulletPool);
         return obj;
     }
+    public GameObject GetProjectile(GameObject requestedPrefab)
+    {
+        if (requestedPrefab == spearPrefab) return spearPool.Get();
+        if (requestedPrefab == feBulletPrefab) return feBulletPool.Get();
+        if (requestedPrefab == frBulletPrefab) return frBulletPool.Get();
+
+        return null;
+    }
 
     private void OnGet(GameObject obj) => obj.SetActive(true);
     private void OnRelease(GameObject obj) => obj.SetActive(false);

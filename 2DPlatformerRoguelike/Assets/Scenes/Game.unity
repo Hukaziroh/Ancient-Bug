@@ -299,6 +299,68 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1928378098}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &276117859
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 276117860}
+  - component: {fileID: 276117861}
+  - component: {fileID: 276117862}
+  m_Layer: 0
+  m_Name: PoolManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &276117860
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276117859}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1928378098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &276117861
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276117859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c064af34010ed4345aa2f07377428a6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LightningPool
+  lightningPrefab: {fileID: 8381657890739905406, guid: bd68143b24d643e4eb4b60bbe584e3bf, type: 3}
+  maxSize: 10
+--- !u!114 &276117862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 276117859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b78b2af6b7346b747a0aa6d992777da7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyProjectilePool
+  spearPrefab: {fileID: 1105219882057968592, guid: d8a879dacbbcb734888dbe633cfcb1ce, type: 3}
+  feBulletPrefab: {fileID: 6458457222347822869, guid: 68c31bdaa2d96d8418152b5adcfb1ca5, type: 3}
+  frBulletPrefab: {fileID: 9202960523608745381, guid: f0a3df94794babc49a29e8974b5d0ab3, type: 3}
 --- !u!1 &278522379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2116,8 +2178,19 @@ MonoBehaviour:
   - levelName: 2
     startRoomPrefab: {fileID: 3942557174588525337, guid: 4c590528dcbf021428a8b708ed876cd0, type: 3}
     randomRoomPrefabs:
+    - {fileID: 4107664855764434257, guid: f75b44f87d557184f9a7037965966216, type: 3}
+    - {fileID: 8595984841776147983, guid: cb15d6c47ce02b84abc78a03d987937a, type: 3}
+    - {fileID: 3444616888895434154, guid: 62a7b70596c18eb43960278c3a0a97f8, type: 3}
     - {fileID: 327576544764449309, guid: 28cea4554aa78fd4bbd54d725a705776, type: 3}
-    bossRoomPrefab: {fileID: 327576544764449309, guid: 28cea4554aa78fd4bbd54d725a705776, type: 3}
+    bossRoomPrefab: {fileID: 2011423378885899856, guid: 258993260bbedd1439dd1887986afdc3, type: 3}
+  - levelName: 3
+    startRoomPrefab: {fileID: 3901933526225589795, guid: f0d2f99b62d3485428bbb69ff53937d7, type: 3}
+    randomRoomPrefabs:
+    - {fileID: 3442990142211271774, guid: 4629c223f519fb34083aae79a6ce157d, type: 3}
+    - {fileID: 2065511050806599274, guid: 680a619ce2ecf6e45b594c9836119500, type: 3}
+    - {fileID: 3155954686463093089, guid: 6788835341237f24d81803e6c06bff40, type: 3}
+    - {fileID: 5883199504320910842, guid: a3746e21a1d33994ea3fa369f57934d2, type: 3}
+    bossRoomPrefab: {fileID: 6953535485993653700, guid: 714bbfe93cfd83943964b9c2bbdabaa1, type: 3}
   currentLevelIndex: 0
   totalRooms: 5
   player: {fileID: 1125496829}
@@ -3229,6 +3302,7 @@ MonoBehaviour:
   rewardPanel: {fileID: 1066719224}
   UpButtonText: {fileID: 609385449}
   DownButtonText: {fileID: 518237639}
+  isLevelPortal: 0
 --- !u!1 &1893804169
 GameObject:
   m_ObjectHideFlags: 0
@@ -3395,6 +3469,7 @@ Transform:
   - {fileID: 2007376002}
   - {fileID: 198673979}
   - {fileID: 1867104397}
+  - {fileID: 276117860}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2007376000

@@ -5,7 +5,7 @@ public class FEBullet : MonoBehaviour, IProjectile
 {
     [Header("È­¿°±¸ ¼³Á¤")]
     public float speed = 10f;      
-    public float lifetime = 3f;
+    public float lifetime = 7f;
 
     float damage;
     Vector2 direction;

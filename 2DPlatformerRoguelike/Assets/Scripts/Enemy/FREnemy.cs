@@ -112,12 +112,15 @@ public class FREnemy : MonoBehaviour, IDamageable
 
         if (anim != null) anim.SetTrigger("Attack");
 
-        if (attackPoint != null)
+        if (projectilePrefab != null && attackPoint != null)
         {
             GameObject projObj = EnemyProjectilePool.Instance.frBulletPool.Get();
-            projObj.transform.position = attackPoint.position;
-            projObj.transform.rotation = attackPoint.rotation;
+
             projObj.transform.SetParent(attackPoint);
+            projObj.transform.localPosition = Vector3.zero;
+            projObj.transform.localRotation = Quaternion.identity;
+            projObj.transform.localScale = Vector3.one;
+
             Vector2 throwDirection = movingRight ? Vector2.right : Vector2.left;
             IProjectile projectile = projObj.GetComponent<IProjectile>();
 
@@ -127,7 +130,7 @@ public class FREnemy : MonoBehaviour, IDamageable
             }
         }
 
-     
+
         yield return new WaitForSeconds(breathDuration);
    
         yield return new WaitForSeconds(1.5f);

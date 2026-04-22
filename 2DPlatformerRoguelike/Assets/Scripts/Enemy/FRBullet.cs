@@ -44,6 +44,7 @@ public class FRBullet : MonoBehaviour, IProjectile
     {
         if (gameObject.activeSelf && managedPool != null)
         {
+            transform.SetParent(null);
             managedPool.Release(gameObject);
         }
     }
