@@ -298,14 +298,17 @@ public class Boss : MonoBehaviour, IDamageable
             {
                 playerScript.AddGold(dropGold);
             }
+            StartCoroutine(DeathRoutine());
         }
-
+    }
+    private IEnumerator DeathRoutine()
+    {
+        yield return new WaitForSeconds(3f);
         if (portalPrefab != null)
         {
             Instantiate(portalPrefab, transform.position, Quaternion.identity);
         }
-
-        Destroy(gameObject, 3f);
+        Destroy(gameObject);
     }
 
     private IEnumerator GoToLobbyRoutine()

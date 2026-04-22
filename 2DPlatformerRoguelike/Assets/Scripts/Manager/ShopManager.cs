@@ -16,6 +16,7 @@ public class ShopManager : MonoBehaviour
     private Player player;
 
     private bool isOpenedFromDoor = false;
+    private bool isLevelTransition = false;
 
     private void Awake()
     {
@@ -27,9 +28,10 @@ public class ShopManager : MonoBehaviour
         if (playerObj != null) player = playerObj.GetComponent<Player>();
     }
 
-    public void OpenShopFromDoor()
+    public void OpenShopFromDoor(bool isLevel = false)
     {
         isOpenedFromDoor = true;
+        isLevelTransition = isLevel;
         if (shopPanel != null) shopPanel.SetActive(true);
     }
 
@@ -72,7 +74,15 @@ public class ShopManager : MonoBehaviour
         {
             isOpenedFromDoor = false;
             Time.timeScale = 1f;
-            RoomManager.Instance.LoadNextRoom();
+            if (isLevelTransition)
+            {
+                RoomManager.Instance.GoToNextLevel();
+                isLevelTransition = false;
+            }
+            else
+            {
+                RoomManager.Instance.LoadNextRoom();
+            }
         }
         else
         {

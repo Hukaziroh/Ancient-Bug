@@ -41,6 +41,7 @@ public class Door : MonoBehaviour
 
                 if (RewardManager.Instance != null)
                 {
+                    RewardManager.Instance.isLevelPortal = false;
                     RewardManager.Instance.ShowRewardUI();
                 }
             }

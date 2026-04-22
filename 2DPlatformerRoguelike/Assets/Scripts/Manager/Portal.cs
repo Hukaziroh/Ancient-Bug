@@ -4,13 +4,13 @@ public class Portal : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D other)
     {
- 
         if (other.CompareTag("Player"))
         {
-            if (RoomManager.Instance != null)
+            if (RewardManager.Instance != null && RoomManager.Instance != null)
             {
-                RoomManager.Instance.GoToNextLevel();
-                Destroy(gameObject); 
+                RewardManager.Instance.isLevelPortal = true;
+                RewardManager.Instance.ShowRewardUI();
+                Destroy(gameObject);
             }
         }
     }

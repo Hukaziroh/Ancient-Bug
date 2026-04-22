@@ -15,6 +15,8 @@ public class RewardManager : MonoBehaviour
     public TextMeshProUGUI UpButtonText;
     public TextMeshProUGUI DownButtonText;
 
+    [HideInInspector] public bool isLevelPortal = false;
+
     private enum RewardType { AttackUp, Heal, MaxHpUp, Shop}
 
     private RewardType upReward;
@@ -99,13 +101,22 @@ public class RewardManager : MonoBehaviour
             if (ShopManager.Instance != null)
             {            
                 ShopManager.Instance.OpenShopFromDoor();
+                isLevelPortal = false;
             }
         }
         else
         {
          
             Time.timeScale = 1f;
-            RoomManager.Instance.LoadNextRoom();
+            if (isLevelPortal)
+            {
+                RoomManager.Instance.GoToNextLevel();
+                isLevelPortal = false;
+            }
+            else
+            {
+                RoomManager.Instance.LoadNextRoom();
+            }          
         }
     }   
 }

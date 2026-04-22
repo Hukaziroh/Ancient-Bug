@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class FEBullet : MonoBehaviour, IProjectile
 {
@@ -10,6 +11,7 @@ public class FEBullet : MonoBehaviour, IProjectile
     Vector2 direction;
     Rigidbody2D rb;
 
+    private IObjectPool<GameObject> managedPool;
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -22,7 +24,8 @@ public class FEBullet : MonoBehaviour, IProjectile
 
         if (direction.x < 0) transform.localScale = new Vector3(-1, 1, 1);
 
-        Destroy(gameObject, lifetime);
+        CancelInvoke("ReturnToPool");
+        Invoke("ReturnToPool", lifetime);
     }
 
     private void FixedUpdate()
@@ -36,8 +39,8 @@ public class FEBullet : MonoBehaviour, IProjectile
         {
             Player player = collision.GetComponent<Player>();
             if (player != null && player.isInvincible)
-            {             
-                Destroy(gameObject);
+            {
+                ReturnToPool();
                 return;
             }
 
@@ -47,11 +50,23 @@ public class FEBullet : MonoBehaviour, IProjectile
             PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
             if (playerMovement != null) playerMovement.ApplyKnockback(transform);
 
-            Destroy(gameObject);
+            ReturnToPool();
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            Destroy(gameObject);
+            ReturnToPool();
+        }
+    }
+    public void SetManagedPool(IObjectPool<GameObject> pool)
+    {
+        managedPool = pool;
+    }
+
+    private void ReturnToPool()
+    {
+        if (gameObject.activeSelf && managedPool != null)
+        {
+            managedPool.Release(gameObject);
         }
     }
 }

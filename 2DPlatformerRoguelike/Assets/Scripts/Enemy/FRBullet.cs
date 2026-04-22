@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class FRBullet : MonoBehaviour, IProjectile
 {
@@ -6,11 +7,13 @@ public class FRBullet : MonoBehaviour, IProjectile
     public float lifetime = 2f; 
     float damage;
 
-  
+    private IObjectPool<GameObject> managedPool;
+
     public void Setup(Vector2 moveDirection, float attackDamage)
     {
         damage = attackDamage;
-        Destroy(gameObject, lifetime);
+        CancelInvoke("ReturnToPool");
+        Invoke("ReturnToPool", lifetime);
     }
 
   
@@ -31,5 +34,17 @@ public class FRBullet : MonoBehaviour, IProjectile
             if (playerMovement != null) playerMovement.ApplyKnockback(transform);
 
         }     
+    }
+    public void SetManagedPool(IObjectPool<GameObject> pool)
+    {
+        managedPool = pool;
+    }
+
+    private void ReturnToPool()
+    {
+        if (gameObject.activeSelf && managedPool != null)
+        {
+            managedPool.Release(gameObject);
+        }
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Spear : MonoBehaviour, IProjectile
 {
@@ -9,6 +10,8 @@ public class Spear : MonoBehaviour, IProjectile
 
     float damage;
     Rigidbody2D rb;
+
+    private IObjectPool<GameObject> managedPool;
 
     private void Awake()
     {
@@ -23,7 +26,8 @@ public class Spear : MonoBehaviour, IProjectile
 
         rb.linearVelocity = new Vector2(dirX * throwPowerX, throwPowerY);
 
-        Destroy(gameObject, lifetime);
+        CancelInvoke("ReturnToPool");
+        Invoke("ReturnToPool", lifetime);
     }
 
     private void Update()
@@ -43,7 +47,7 @@ public class Spear : MonoBehaviour, IProjectile
             Player player = collision.GetComponent<Player>();
             if (player != null && player.isInvincible)
             {
-                Destroy(gameObject);
+                ReturnToPool();
                 return;
             }
 
@@ -53,11 +57,24 @@ public class Spear : MonoBehaviour, IProjectile
             PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
             if (playerMovement != null) playerMovement.ApplyKnockback(transform);
 
-            Destroy(gameObject);
+            ReturnToPool();
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
-            Destroy(gameObject);              
+            ReturnToPool();
+        }
+    }
+
+    public void SetManagedPool(IObjectPool<GameObject> pool)
+    {
+        managedPool = pool;
+    }
+
+    private void ReturnToPool()
+    {
+        if (gameObject.activeSelf && managedPool != null)
+        {
+            managedPool.Release(gameObject);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Collections;
 public class TurretEnemy : MonoBehaviour
 {
     [Header("발사 설정")]
-    public GameObject projectilePrefab;
+    //public GameObject projectilePrefab;
     public Transform firePoint;
 
     [Header("스탯 설정")]
@@ -27,9 +27,11 @@ public class TurretEnemy : MonoBehaviour
 
     private void Shoot()
     {
-        if (projectilePrefab == null || firePoint == null) return;
+        if (firePoint == null) return;
 
-        GameObject bulletObj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        GameObject bulletObj = EnemyProjectilePool.Instance.feBulletPool.Get();
+        bulletObj.transform.position = firePoint.position;
+        bulletObj.transform.rotation = firePoint.rotation;
         Vector2 shootDir = firePoint.right;
         
         IProjectile projectile = bulletObj.GetComponent<IProjectile>();

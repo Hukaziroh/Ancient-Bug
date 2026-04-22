@@ -113,7 +113,9 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (attackPoint == null) return;
 
-        GameObject projObj = Instantiate(projectilePrefab, attackPoint.position, Quaternion.identity);
+        GameObject projObj = EnemyProjectilePool.Instance.spearPool.Get();
+        projObj.transform.position = attackPoint.position;
+        projObj.transform.rotation = Quaternion.identity;
         Vector2 throwDirection = movingRight ? Vector2.right : Vector2.left;
         IProjectile projectile = projObj.GetComponent<IProjectile>();
 

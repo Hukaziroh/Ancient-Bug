@@ -7,12 +7,8 @@ using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
-    [Header("스킬 UI")]
-    public SkillCooldownUI skillUI;
-
     [Header("공격 설정")]
     public float AttackDamage = 5f;
-    public GameObject FireBall;
 
     [Header("타격 판정 설정")]
     public Transform attackPoint;
@@ -103,12 +99,14 @@ public class PlayerAttack : MonoBehaviour
             Transform target = sortedEnemies[i].transform;
             Vector3 spawnPosition = new Vector3(target.position.x, target.position.y + lightingYOffset, 0f);
 
-            GameObject lightning = Instantiate(lightningPrefab, spawnPosition, Quaternion.identity);
-            Destroy(lightning, 1.6f);
+            GameObject lightning = LightningPool.Instance.Get();
+            lightning.transform.position = spawnPosition;
+            lightning.transform.rotation = Quaternion.identity;
 
             float finalDamage = AttackDamage + skillDamage;
 
             StartCoroutine(DelayedDamageRoutine(target, lightning, finalDamage, lightningStrikeDelay));
+            StartCoroutine(ReleaseLightningRoutine(lightning, 1.6f));
         }
     }
 
@@ -121,7 +119,7 @@ public class PlayerAttack : MonoBehaviour
             yield return new WaitForFixedUpdate();
             timer += Time.fixedDeltaTime;
 
-            if (target != null && lightning != null)
+            if (target != null && lightning != null && lightning.activeSelf)
             {
                 lightning.transform.position = new Vector3(target.position.x, target.position.y + lightingYOffset, 0f);
             }
@@ -134,6 +132,15 @@ public class PlayerAttack : MonoBehaviour
             {
                 damageable.TakeDamage(damage);
             }
+        }
+    }
+    private System.Collections.IEnumerator ReleaseLightningRoutine(GameObject lightning, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (lightning != null && lightning.activeSelf && LightningPool.Instance != null)
+        {
+            LightningPool.Instance.Release(lightning);
         }
     }
 }

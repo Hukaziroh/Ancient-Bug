@@ -112,9 +112,12 @@ public class FREnemy : MonoBehaviour, IDamageable
 
         if (anim != null) anim.SetTrigger("Attack");
 
-        if (projectilePrefab != null && attackPoint != null)
+        if (attackPoint != null)
         {
-            GameObject projObj = Instantiate(projectilePrefab, attackPoint.position, attackPoint.rotation, attackPoint);
+            GameObject projObj = EnemyProjectilePool.Instance.frBulletPool.Get();
+            projObj.transform.position = attackPoint.position;
+            projObj.transform.rotation = attackPoint.rotation;
+            projObj.transform.SetParent(attackPoint);
             Vector2 throwDirection = movingRight ? Vector2.right : Vector2.left;
             IProjectile projectile = projObj.GetComponent<IProjectile>();
 
