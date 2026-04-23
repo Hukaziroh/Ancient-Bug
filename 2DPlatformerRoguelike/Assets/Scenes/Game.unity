@@ -361,6 +361,7 @@ MonoBehaviour:
   spearPrefab: {fileID: 1105219882057968592, guid: d8a879dacbbcb734888dbe633cfcb1ce, type: 3}
   feBulletPrefab: {fileID: 6458457222347822869, guid: 68c31bdaa2d96d8418152b5adcfb1ca5, type: 3}
   frBulletPrefab: {fileID: 9202960523608745381, guid: f0a3df94794babc49a29e8974b5d0ab3, type: 3}
+  boss2BulletPrefab: {fileID: 5513450165420888171, guid: 4002fd1fba0ff2d4ea6226f010fd4152, type: 3}
 --- !u!1 &278522379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2168,7 +2169,7 @@ MonoBehaviour:
   remainingEnemies: 0
   levels:
   - levelName: 1
-    startRoomPrefab: {fileID: 1872253693160420788, guid: 2d9e9cdd22716ec4f8673f460fe404b2, type: 3}
+    startRoomPrefab: {fileID: 5563899501905041970, guid: dde40dad15e6a81469543d408d4b77a7, type: 3}
     randomRoomPrefabs:
     - {fileID: 806265722331558907, guid: 2e56ff782f331624ca1e088ee20af013, type: 3}
     - {fileID: 1788271142448925299, guid: e38dd274b7c3212479816e69ad497698, type: 3}

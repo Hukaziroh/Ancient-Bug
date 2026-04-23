@@ -60,7 +60,7 @@ public class ShopManager : MonoBehaviour
             PlayerAttack pAttack = player.GetComponent<PlayerAttack>();
             if(pAttack != null)
             {
-                pAttack.AttackDamage += 10f;
+                pAttack.AttackDamage += 5f;
             }          
         }
         else Debug.Log("µ·¾øÀ½");

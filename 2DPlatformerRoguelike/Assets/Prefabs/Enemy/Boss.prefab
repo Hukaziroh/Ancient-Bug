@@ -194,13 +194,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss
   currentState: 0
+  maxHp: 1000
   currentHp: 1
   moveSpeed: 3
   meleeAttackRange: 3
   rollAttackRange: 5
-  spikeDamage: 1
-  roarDamage: 1
-  rollDamage: 1
+  spikeDamage: 10
+  roarDamage: 10
+  rollDamage: 10
   playerLayer:
     serializedVersion: 2
     m_Bits: 64

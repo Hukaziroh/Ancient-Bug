@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Punch : MonoBehaviour, IProjectile
 {
@@ -9,6 +10,10 @@ public class Punch : MonoBehaviour, IProjectile
     Vector2 direction;
     Rigidbody2D rb;
 
+    public void SetManagedPool(IObjectPool<GameObject> pool)
+    {
+
+    }
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();

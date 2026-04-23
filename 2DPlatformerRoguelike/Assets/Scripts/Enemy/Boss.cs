@@ -16,7 +16,8 @@ public class Boss : MonoBehaviour, IDamageable
 
     [Header("보스 상태")]
     public BossState currentState;
-    public float currentHp = 1000f;
+    public float maxHp = 1000f;
+    public float currentHp;
     public float moveSpeed = 3f;
 
     [Header("공격 사거리 설정")]
@@ -79,6 +80,14 @@ public class Boss : MonoBehaviour, IDamageable
 
     private void Start()
     {
+        currentHp = maxHp;
+
+        if (BossHealthBar.Instance != null)
+        {
+            BossHealthBar.Instance.ShowBossUI();
+            BossHealthBar.Instance.UpdateHP(currentHp, maxHp);
+        }
+      
         ChangeState(BossState.Idle);
         StartCoroutine(ThinkRoutine());
     }
@@ -264,6 +273,8 @@ public class Boss : MonoBehaviour, IDamageable
 
         currentHp -= damage;
 
+
+        if (BossHealthBar.Instance != null) BossHealthBar.Instance.UpdateHP(currentHp, maxHp);
         if (sr != null) StartCoroutine(HitFlashRoutine());
 
         if (currentHp <= 0) Die();
@@ -289,6 +300,8 @@ public class Boss : MonoBehaviour, IDamageable
     {
         if (currentState == BossState.Dead) return;
         ChangeState(BossState.Dead);
+
+        if (BossHealthBar.Instance != null) BossHealthBar.Instance.HideBossUI();
 
         if (sr != null)
         {

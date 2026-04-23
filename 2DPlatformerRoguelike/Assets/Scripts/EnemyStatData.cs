@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 [CreateAssetMenu(fileName = "EnemyStatData", menuName = "Scriptable Objects/EnemyStatData")]
 public class EnemyStatData : ScriptableObject
@@ -21,4 +22,5 @@ public interface IDamageable
 public interface IProjectile
 {
     void Setup(Vector2 moveDirection, float attackDamage);
+    void SetManagedPool(IObjectPool<GameObject> pool);
 }
