@@ -8,7 +8,7 @@ using System.Collections;
 public class PlayerAttack : MonoBehaviour
 {
     [Header("공격 설정")]
-    public float AttackDamage = 5f;
+    public float AttackDamage = 10f;
 
     [Header("타격 판정 설정")]
     public Transform attackPoint;

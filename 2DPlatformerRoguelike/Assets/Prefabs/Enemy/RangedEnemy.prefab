@@ -244,7 +244,7 @@ MonoBehaviour:
   attackRange: 4
   attackPoint: {fileID: 6359972484954578763}
   projectilePrefab: {fileID: 1105219882057968592, guid: d8a879dacbbcb734888dbe633cfcb1ce, type: 3}
-  dropGold: 50
+  dropGold: 20
 --- !u!1 &991516120803230934
 GameObject:
   m_ObjectHideFlags: 0

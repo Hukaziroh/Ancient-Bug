@@ -140,7 +140,7 @@ MonoBehaviour:
   attackRange: 0
   attackPoint: {fileID: 0}
   projectilePrefab: {fileID: 0}
-  dropGold: 50
+  dropGold: 15
 --- !u!61 &1118995904162092640
 BoxCollider2D:
   m_ObjectHideFlags: 0

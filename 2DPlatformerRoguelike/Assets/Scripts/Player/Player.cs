@@ -6,7 +6,7 @@ public class Player : MonoBehaviour, IDamageable
 {
    
     [Header("체력 설정")]
-    public float maxHP = 100f;
+    public float maxHP = 200f;
     private float currentHP;
 
     [Header("보유 재화")]

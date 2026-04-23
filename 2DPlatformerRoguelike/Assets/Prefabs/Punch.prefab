@@ -119,4 +119,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d3c08b3c28f60e4d942296451dce323, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Punch
-  lifetime: 1
+  lifetime: 0.2

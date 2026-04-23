@@ -214,7 +214,7 @@ MonoBehaviour:
   attackPoint: {fileID: 358314434839594530}
   projectilePrefab: {fileID: 9202960523608745381, guid: f0a3df94794babc49a29e8974b5d0ab3, type: 3}
   breathDuration: 2
-  dropGold: 50
+  dropGold: 30
 --- !u!1 &5936191903976445291
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: ME2
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatData
   enemyName: Dummy
-  maxHP: 200
+  maxHP: 100
   damage: 20
   moveSpeed: 3

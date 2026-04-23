@@ -209,7 +209,7 @@ MonoBehaviour:
   rollHitRadius: 1.2
   spikeHitBox: {x: 4, y: 3}
   spikeHitOffset: 0
-  dropGold: 1000
+  dropGold: 400
   portalPrefab: {fileID: 2346168283049686108, guid: 9150ede824f1c34459ee34c27caa0ce9, type: 3}
   idleToWalkDelay: 1.5
   rollAnticipation: 0.5

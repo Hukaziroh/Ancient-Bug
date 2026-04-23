@@ -632,17 +632,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 389563330}
   m_CullTransparentMesh: 1
---- !u!114 &462484066 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1395743606221216097, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
-  m_PrefabInstance: {fileID: 811202750}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1 &484196324
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,21 +1756,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1055695397415454470, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
-      propertyPath: enemyText
-      value: 
-      objectReference: {fileID: 462484066}
     - target: {fileID: 2983498248408105942, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
       propertyPath: m_Name
       value: UICanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 8208088041508731108, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
-      propertyPath: m_Name
-      value: EnemyText
+    - target: {fileID: 3358476784068400568, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8634865167031968237, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
-      propertyPath: m_Name
-      value: EnemyImage
+    - target: {fileID: 6468694988764988292, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2169,7 +2154,7 @@ MonoBehaviour:
   remainingEnemies: 0
   levels:
   - levelName: 1
-    startRoomPrefab: {fileID: 5563899501905041970, guid: dde40dad15e6a81469543d408d4b77a7, type: 3}
+    startRoomPrefab: {fileID: 1872253693160420788, guid: 2d9e9cdd22716ec4f8673f460fe404b2, type: 3}
     randomRoomPrefabs:
     - {fileID: 806265722331558907, guid: 2e56ff782f331624ca1e088ee20af013, type: 3}
     - {fileID: 1788271142448925299, guid: e38dd274b7c3212479816e69ad497698, type: 3}
@@ -2982,6 +2967,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7340253681073620548, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
   m_PrefabInstance: {fileID: 1586438526}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1717335334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3358476784068400568, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
+  m_PrefabInstance: {fileID: 811202750}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1766142666
 GameObject:
   m_ObjectHideFlags: 0
@@ -3437,6 +3427,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893804169}
   m_CullTransparentMesh: 1
+--- !u!1 &1918540061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1918540062}
+  - component: {fileID: 1918540063}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1918540062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918540061}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1928378098}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1918540063
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918540061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8447c37f539d87b4186e105b943cc0e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BossHealthBar
+  uiContainer: {fileID: 1717335334}
+  fillImage: {fileID: 1923806831}
+--- !u!114 &1923806831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 542721654196624951, guid: 4c953f3f81290714aa16a1b1b117e48f, type: 3}
+  m_PrefabInstance: {fileID: 811202750}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1 &1928378097
 GameObject:
   m_ObjectHideFlags: 0
@@ -3471,6 +3518,7 @@ Transform:
   - {fileID: 198673979}
   - {fileID: 1867104397}
   - {fileID: 276117860}
+  - {fileID: 1918540062}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2007376000
@@ -3776,7 +3824,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: AttackDamage
-      value: 10000
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: lightingPrefab
@@ -3840,7 +3888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9039149228464186564, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: maxHP
-      value: 10000
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -73,6 +73,7 @@
     <Compile Include="Assets\Scripts\Manager\RoomManager.cs" />
     <Compile Include="Assets\Scripts\Enemy\Larva.cs" />
     <Compile Include="Assets\Scripts\Manager\SkillCooldownUI.cs" />
+    <Compile Include="Assets\Scripts\Manager\BossHealthBar.cs" />
     <Compile Include="Assets\Scripts\Manager\UIManager.cs" />
     <Compile Include="Assets\Scripts\EnemyStatData.cs" />
     <Compile Include="Assets\Scripts\Manager\Portal.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Assets\Scripts\Enemy\Punch.cs" />
     <Compile Include="Assets\Scripts\Enemy\Boss.cs" />
     <Compile Include="Assets\Scripts\Manager\LightningPool.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Boss2.cs" />
+    <Compile Include="Assets\Scripts\Enemy\Boss2Bullet.cs" />
     <Compile Include="Assets\Scripts\Manager\LobbyUIController.cs" />
     <Compile Include="Assets\Scripts\Manager\RoomBoundsUpdater.cs" />
     <Compile Include="Assets\Scripts\Enemy\Enemy.cs" />
