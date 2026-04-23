@@ -115,7 +115,7 @@ public class Enemy : MonoBehaviour, IDamageable
 
         GameObject projObj = EnemyProjectilePool.Instance.GetProjectile(projectilePrefab);
 
-        if (projObj == null) return; // 에러 방지
+        if (projObj == null) return;
 
         projObj.transform.position = attackPoint.position;
         projObj.transform.rotation = Quaternion.identity;

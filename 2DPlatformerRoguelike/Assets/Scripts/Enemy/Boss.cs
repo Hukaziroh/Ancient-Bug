@@ -39,6 +39,29 @@ public class Boss : MonoBehaviour, IDamageable
     public int dropGold = 1000;
     public GameObject portalPrefab;
 
+    [Header("패턴 전환 딜레이")]
+    public float idleToWalkDelay = 1.5f; // 가만히 있다가 걷기 시작할 때까지의 대기 시간
+
+    [Header("구르기(Roll) 시간 설정")]
+    public float rollAnticipation = 0.5f; // 웅크리기(선딜레이)
+    public float rollDuration = 3f;       // 실제로 굴러가는 시간
+    public float rollRecoil = 0.6f;       // 구르고 나서 일어나는 시간(후딜레이)
+
+    [Header("가시(Spike) 시간 설정")]
+    public float spikeAnticipation = 0.2f;  // 공격 전 준비 동작 시간
+    public float spikeHitDelay = 1f;        // 공격 애니메이션 시작 후 데미지가 들어갈 때까지의 시간
+    public float spikePostHitDelay = 0.15f; // 데미지 판정 후 거둬들이기 전 대기 시간
+    public float spikeRecoil = 0.2f;        // 공격을 완전히 끝내고 돌아오는 시간
+
+    [Header("포효(Roar) 시간 설정")]
+    public float roarAnticipation = 0.5f;   // 포효 전 숨 고르기
+    public float roarHitDelay = 0.2f;       // 포효 시작 후 데미지 판정까지의 시간
+    public float roarPostHitDelay = 0.8f;   // 데미지 판정 후 포효를 유지하는 시간
+    public float roarRecoil = 0.5f;         // 포효가 끝나고 숨 고르는 시간
+
+    [Header("특수 상태 시간 설정")]
+
+    public float tiredDuration = 5f;
     private Animator anim;
     private Rigidbody2D rb;
     private Transform player;
@@ -116,7 +139,7 @@ public class Boss : MonoBehaviour, IDamageable
         {
             if (currentState == BossState.Idle)
             {
-                yield return new WaitForSeconds(1.5f);
+                yield return new WaitForSeconds(idleToWalkDelay);
                 ChangeState(BossState.Walk);
             }
             else if (currentState == BossState.Walk)
@@ -146,7 +169,7 @@ public class Boss : MonoBehaviour, IDamageable
     {
         ChangeState(BossState.RollAttack);
         anim.Play("RollAttackAnticipation");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(rollAnticipation);
 
         anim.Play("RollAttack");
 
@@ -177,7 +200,7 @@ public class Boss : MonoBehaviour, IDamageable
         }
         anim.Play("RollAttackRecoil");
         rb.linearVelocity = Vector2.zero;
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(rollRecoil);
 
         ChangeState(BossState.Idle);
     }
@@ -186,11 +209,11 @@ public class Boss : MonoBehaviour, IDamageable
     {
         ChangeState(BossState.SpikeAttack);
         anim.Play("SpikeAttackAnticipation");
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(spikeAnticipation);
 
         anim.Play("SpikeAttack");
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(spikeHitDelay);
 
         float attackDir = transform.localScale.x < 0 ? 1f : -1f;
         Vector2 hitCenter = (Vector2)transform.position + new Vector2(attackDir * spikeHitOffset, 0f);
@@ -202,10 +225,10 @@ public class Boss : MonoBehaviour, IDamageable
             if (damageable != null) damageable.TakeDamage(spikeDamage);
         }
 
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(spikePostHitDelay);
 
         anim.Play("SpikeAttackRecoil");
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(spikeRecoil);
 
         ChangeState(BossState.Idle);
     }
@@ -214,11 +237,11 @@ public class Boss : MonoBehaviour, IDamageable
     {
         ChangeState(BossState.RoarAttack);
         anim.Play("RoarAnticipation");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(roarAnticipation);
 
         anim.Play("Roar");
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(roarHitDelay);
 
         Collider2D hit = Physics2D.OverlapCircle(transform.position, roarRadius, playerLayer);
         if (hit != null)
@@ -227,10 +250,10 @@ public class Boss : MonoBehaviour, IDamageable
             if (damageable != null) damageable.TakeDamage(roarDamage);
         }
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(roarPostHitDelay);
 
         anim.Play("RoarRecoil");
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(roarRecoil);
 
         ChangeState(BossState.Idle);
     }

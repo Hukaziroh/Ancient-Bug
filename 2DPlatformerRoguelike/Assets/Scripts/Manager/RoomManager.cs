@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using System.Collections.Generic;
 
-// [클래스] 각 층마다 사용할 방들을 묶어주는 데이터 구조입니다.
 [System.Serializable]
 public class LevelData
 {
@@ -18,7 +17,6 @@ public class RoomManager : MonoBehaviour
     public int remainingEnemies = 0;
 
     [Header("레벨(층) 설정")]
-    // 이제 인스펙터에서 Levels 리스트에 1층, 2층 방들을 각각 넣을 수 있습니다.
     public List<LevelData> levels = new List<LevelData>();
     public int currentLevelIndex = 0;
 
@@ -36,7 +34,6 @@ public class RoomManager : MonoBehaviour
 
     private List<GameObject> shuffledRooms = new List<GameObject>();
 
-    // 현재 층에 맞는 데이터를 가져오는 도우미 속성입니다.
     private LevelData CurrentLevelData => levels[Mathf.Min(currentLevelIndex, levels.Count - 1)];
 
     private void Awake()
@@ -48,11 +45,9 @@ public class RoomManager : MonoBehaviour
     {
         if (fadeCanvasGroup != null) fadeCanvasGroup.alpha = 1f;
 
-        // 게임 시작 시 초기화 및 첫 방 로드
         StartNewLevel();
     }
 
-    // 포털에서 호출할 함수입니다.
     public void GoToNextLevel()
     {
         currentLevelIndex++;
@@ -85,6 +80,13 @@ public class RoomManager : MonoBehaviour
     public void LoadNextRoom()
     {
         if (isTransitioning) return;
+
+        //if (currentRoomCount >= totalRooms)
+        //{
+        //    GoToNextLevel();
+        //    return;
+        //}
+
         StartCoroutine(TransitionRoomRoutine());
     }
 
@@ -133,7 +135,6 @@ public class RoomManager : MonoBehaviour
         currentRoom = Instantiate(roomToLoad, Vector3.zero, Quaternion.identity);
 
         int normalEnemies = currentRoom.GetComponentsInChildren<Enemy>().Length;
-        // 보내주신 코드의 FREnemy 로직 유지
         int fireEnemies = currentRoom.GetComponentsInChildren<FREnemy>().Length;
         remainingEnemies = normalEnemies + fireEnemies;
 
