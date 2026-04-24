@@ -194,7 +194,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss
   currentState: 0
-  maxHp: 1000
+  maxHp: 3000
   currentHp: 1
   moveSpeed: 3
   meleeAttackRange: 3
@@ -202,12 +202,14 @@ MonoBehaviour:
   spikeDamage: 10
   roarDamage: 10
   rollDamage: 10
+  isSpikeActive: 0
+  reflectDamage: 10
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
   roarRadius: 4
   rollHitRadius: 1.2
-  spikeHitBox: {x: 4, y: 3}
+  spikeHitBox: {x: 3, y: 2.5}
   spikeHitOffset: 0
   dropGold: 400
   portalPrefab: {fileID: 2346168283049686108, guid: 9150ede824f1c34459ee34c27caa0ce9, type: 3}

@@ -3818,29 +3818,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: skillRange
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: AttackDamage
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: lightingPrefab
-      value: 
-      objectReference: {fileID: 8381657890739905406, guid: bd68143b24d643e4eb4b60bbe584e3bf, type: 3}
-    - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: lightingYOffset
-      value: 1.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: lightningPrefab
-      value: 
-      objectReference: {fileID: 8381657890739905406, guid: bd68143b24d643e4eb4b60bbe584e3bf, type: 3}
-    - target: {fileID: 3226757533140683677, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: lightningStrikeDelay
-      value: 0.5
+    - target: {fileID: 2589883100715487322, guid: b654b65cff1247e488943b650aa80769, type: 3}
+      propertyPath: maxHP
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 4585431207362018213, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3882,13 +3862,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6464510604843603002, guid: b654b65cff1247e488943b650aa80769, type: 3}
+      propertyPath: AttackDamage
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8768782082202985495, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 9039149228464186564, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: maxHP
-      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

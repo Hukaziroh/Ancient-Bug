@@ -28,6 +28,8 @@ public class Boss : MonoBehaviour, IDamageable
     public float spikeDamage = 20f;
     public float roarDamage = 15f;
     public float rollDamage = 30f;
+    public bool isSpikeActive = false; 
+    public float reflectDamage = 10f;
 
     [Header("타격 판정 설정")]
     public LayerMask playerLayer;
@@ -41,24 +43,24 @@ public class Boss : MonoBehaviour, IDamageable
     public GameObject portalPrefab;
 
     [Header("패턴 전환 딜레이")]
-    public float idleToWalkDelay = 1.5f; // 가만히 있다가 걷기 시작할 때까지의 대기 시간
+    public float idleToWalkDelay = 1.5f;
 
     [Header("구르기(Roll) 시간 설정")]
-    public float rollAnticipation = 0.5f; // 웅크리기(선딜레이)
-    public float rollDuration = 3f;       // 실제로 굴러가는 시간
-    public float rollRecoil = 0.6f;       // 구르고 나서 일어나는 시간(후딜레이)
+    public float rollAnticipation = 0.5f;
+    public float rollDuration = 3f;      
+    public float rollRecoil = 0.6f;       
 
     [Header("가시(Spike) 시간 설정")]
-    public float spikeAnticipation = 0.2f;  // 공격 전 준비 동작 시간
-    public float spikeHitDelay = 1f;        // 공격 애니메이션 시작 후 데미지가 들어갈 때까지의 시간
-    public float spikePostHitDelay = 0.15f; // 데미지 판정 후 거둬들이기 전 대기 시간
-    public float spikeRecoil = 0.2f;        // 공격을 완전히 끝내고 돌아오는 시간
+    public float spikeAnticipation = 0.2f; 
+    public float spikeHitDelay = 1f;       
+    public float spikePostHitDelay = 0.15f;
+    public float spikeRecoil = 0.2f;       
 
     [Header("포효(Roar) 시간 설정")]
-    public float roarAnticipation = 0.5f;   // 포효 전 숨 고르기
-    public float roarHitDelay = 0.2f;       // 포효 시작 후 데미지 판정까지의 시간
-    public float roarPostHitDelay = 0.8f;   // 데미지 판정 후 포효를 유지하는 시간
-    public float roarRecoil = 0.5f;         // 포효가 끝나고 숨 고르는 시간
+    public float roarAnticipation = 0.5f;   
+    public float roarHitDelay = 0.2f;      
+    public float roarPostHitDelay = 0.8f;  
+    public float roarRecoil = 0.5f;        
 
     [Header("특수 상태 시간 설정")]
 
@@ -222,6 +224,8 @@ public class Boss : MonoBehaviour, IDamageable
 
         anim.Play("SpikeAttack");
 
+        isSpikeActive = true;
+
         yield return new WaitForSeconds(spikeHitDelay);
 
         float attackDir = transform.localScale.x < 0 ? 1f : -1f;
@@ -235,6 +239,8 @@ public class Boss : MonoBehaviour, IDamageable
         }
 
         yield return new WaitForSeconds(spikePostHitDelay);
+
+        isSpikeActive = false;
 
         anim.Play("SpikeAttackRecoil");
         yield return new WaitForSeconds(spikeRecoil);
@@ -271,8 +277,20 @@ public class Boss : MonoBehaviour, IDamageable
     {
         if (currentState == BossState.Dead) return;
 
-        currentHp -= damage;
+        if (isSpikeActive)
+        {
+            if (player != null)
+            {
+                IDamageable playerDamage = player.GetComponent<IDamageable>();
+                if (playerDamage != null)
+                {
+                    playerDamage.TakeDamage(reflectDamage); 
+                }
+            }
+            return; 
+        }
 
+        currentHp -= damage;
 
         if (BossHealthBar.Instance != null) BossHealthBar.Instance.UpdateHP(currentHp, maxHp);
         if (sr != null) StartCoroutine(HitFlashRoutine());
@@ -280,7 +298,6 @@ public class Boss : MonoBehaviour, IDamageable
         if (currentHp <= 0) Die();
         else if (currentHp == 300f) StartCoroutine(TiredRoutine());
     }
-
     private IEnumerator HitFlashRoutine()
     {
         sr.color = Color.red;

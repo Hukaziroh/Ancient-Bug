@@ -80,12 +80,11 @@ public class RoomManager : MonoBehaviour
     public void LoadNextRoom()
     {
         if (isTransitioning) return;
-
-        //if (currentRoomCount >= totalRooms)
-        //{
-        //    GoToNextLevel();
-        //    return;
-        //}
+        if (currentRoomCount >= totalRooms)
+        {
+            GoToNextLevel();
+            return;
+        }
 
         StartCoroutine(TransitionRoomRoutine());
     }
@@ -136,7 +135,9 @@ public class RoomManager : MonoBehaviour
 
         int normalEnemies = currentRoom.GetComponentsInChildren<Enemy>().Length;
         int fireEnemies = currentRoom.GetComponentsInChildren<FREnemy>().Length;
-        remainingEnemies = normalEnemies + fireEnemies;
+        int bosses = currentRoom.GetComponentsInChildren<Boss>().Length;
+        int boss2 = currentRoom.GetComponentsInChildren<Boss2>().Length;
+        remainingEnemies = normalEnemies + fireEnemies + bosses;
 
         if (UIManager.Instance != null)
         {

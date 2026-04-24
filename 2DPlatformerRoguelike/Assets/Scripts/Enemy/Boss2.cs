@@ -42,20 +42,20 @@ public class Boss2 : MonoBehaviour, IDamageable
     public float idleDelay = 1.5f;
 
     [Space(10)]
-    public float basicAnticipation = 0.2f; // 평타 선딜
-    public float basicHitDelay = 0.3f;     // 평타 데미지 들어가는 타이밍
-    public float basicRecoil = 0.5f;       // 평타 후딜
+    public float basicAnticipation = 0.2f; 
+    public float basicHitDelay = 0.3f;    
+    public float basicRecoil = 0.5f;      
 
     [Space(10)]
-    public float rangedAnticipation = 0.4f; // 발사 전 폼잡기
-    public float rangedRecoil = 0.6f;       // 발사 후 대기시간
+    public float rangedAnticipation = 0.4f; 
+    public float rangedRecoil = 0.6f;      
 
     [Space(10)]
-    public float chargeWarningTime = 0.6f;  // 빨갛게 번쩍이는 경고 시간
-    public float chargeSpeed = 12f;         // 돌진 속도
-    public float chargeDuration = 0.4f;     // 돌진 유지 시간
-    public float chargeSlamDelay = 0.2f;    // 도착 후 내리찍기(Attack2) 데미지 타이밍
-    public float chargeRecoil = 1f;         // 큰 기술 쓴 후 숨고르기 (후딜)
+    public float chargeWarningTime = 0.6f; 
+    public float chargeSpeed = 12f;         
+    public float chargeDuration = 0.4f;     
+    public float chargeSlamDelay = 0.2f;   
+    public float chargeRecoil = 1f;       
 
     private Animator anim;
     private Rigidbody2D rb;
@@ -331,30 +331,21 @@ public class Boss2 : MonoBehaviour, IDamageable
     }
 
     private void OnDrawGizmosSelected()
-    {
-        // 1. 실제 데미지가 들어가는 물리 판정 박스 (가장 중요!)
-        // 시선 방향(Scale X)에 맞춰서 위치를 계산합니다.
+    {       
         float attackDir = (transform.localScale.x > 0) ? 1f : -1f;
         Vector3 hitCenter = transform.position + new Vector3(attackDir * hitOffset, 0f, 0f);
 
-        // 빨간색 테두리와 반투명한 빨간색 면으로 공격 범위를 보여줍니다.
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(hitCenter, attackHitBox);
-        Gizmos.color = new Color(1f, 0f, 0f, 0.2f); // 20% 투명도
+        Gizmos.color = new Color(1f, 0f, 0f, 0.2f);
         Gizmos.DrawCube(hitCenter, attackHitBox);
 
-
-        // 2. 보스의 인공지능이 "공격할까?"라고 판단하는 인식 사거리 (원형)
-
-        // 근접 공격 사거리 (노란색)
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, meleeAttackRange);
 
-        // 돌진 공격 사거리 (파란색)
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, chargeAttackRange);
 
-        // 원거리 공격 사거리 (하늘색)
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, rangedAttackRange);
     }
