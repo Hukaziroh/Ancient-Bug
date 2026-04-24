@@ -3820,7 +3820,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2589883100715487322, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: maxHP
-      value: 200
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4585431207362018213, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: m_LocalPosition.x
