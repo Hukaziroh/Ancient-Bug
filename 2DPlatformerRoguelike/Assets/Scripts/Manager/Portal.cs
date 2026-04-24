@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
             {
                 RewardManager.Instance.isLevelPortal = true;
                 RewardManager.Instance.ShowRewardUI();
+                Destroy(gameObject);
             }
         }
     }

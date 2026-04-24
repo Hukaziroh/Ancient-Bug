@@ -326,7 +326,7 @@ public class Boss2 : MonoBehaviour, IDamageable
     private IEnumerator DeathRoutine()
     {
         yield return new WaitForSeconds(3f);
-        if (portalPrefab != null) Instantiate(portalPrefab, transform.position, Quaternion.identity);
+        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
         Destroy(gameObject);
     }
 
