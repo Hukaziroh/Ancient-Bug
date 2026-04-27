@@ -215,6 +215,8 @@ MonoBehaviour:
   projectilePrefab: {fileID: 9202960523608745381, guid: f0a3df94794babc49a29e8974b5d0ab3, type: 3}
   breathDuration: 2
   dropGold: 30
+  deathSound: {fileID: 8300000, guid: 97e3a7379168ccc40ad3eabef8775828, type: 3}
+  attackSound: {fileID: 8300000, guid: 4499db369baa4a84aaa29621fa216bb6, type: 3}
 --- !u!1 &5936191903976445291
 GameObject:
   m_ObjectHideFlags: 0

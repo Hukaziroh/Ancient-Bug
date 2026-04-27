@@ -163,6 +163,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TentacleFlower
   damage: 10
   tentacleCollider: {fileID: 2812543064516386779}
+  attackSound: {fileID: 8300000, guid: e47efe57bb85fa340a0679675109d7d1, type: 3}
 --- !u!61 &2812543064516386779
 BoxCollider2D:
   m_ObjectHideFlags: 0

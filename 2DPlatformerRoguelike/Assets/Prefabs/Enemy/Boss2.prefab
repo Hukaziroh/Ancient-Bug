@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 508806622864990075}
   - component: {fileID: 8997945939113205165}
   - component: {fileID: 7732728579174298042}
+  - component: {fileID: 8383633620112111099}
   m_Layer: 7
   m_Name: Boss2
   m_TagString: Untagged
@@ -199,7 +200,7 @@ MonoBehaviour:
   currentHp: 1200
   moveSpeed: 3.5
   meleeAttackRange: 2
-  chargeAttackRange: 6
+  chargeAttackRange: 9
   rangedAttackRange: 10
   basicDamage: 15
   chargeMoveDamage: 20
@@ -213,17 +214,120 @@ MonoBehaviour:
   firePoint: {fileID: 2514498045519643489}
   dropGold: 2000
   portalPrefab: {fileID: 2346168283049686108, guid: 9150ede824f1c34459ee34c27caa0ce9, type: 3}
+  deathSound: {fileID: 8300000, guid: ff335ac229be6b44ca43e06e4ae790cd, type: 3}
+  basicAttackSound: {fileID: 8300000, guid: 4ff91cda8d6d3e44ba7fd99c248373e9, type: 3}
+  rangedAttackSound: {fileID: 8300000, guid: 47561c100213bd64fbfeccb2297ac566, type: 3}
+  chargeLoopSound: {fileID: 8300000, guid: d77a570190b1c444897c7de94cc79334, type: 3}
+  chargeSlamSound: {fileID: 8300000, guid: 4ff91cda8d6d3e44ba7fd99c248373e9, type: 3}
+  loopAudioSource: {fileID: 8383633620112111099}
   idleDelay: 1.5
   basicAnticipation: 0.2
-  basicHitDelay: 0.3
+  basicHitDelay: 0.6
   basicRecoil: 0.5
   rangedAnticipation: 0.4
   rangedRecoil: 0.6
   chargeWarningTime: 0.6
   chargeSpeed: 12
   chargeDuration: 0.4
-  chargeSlamDelay: 0.2
+  chargeSlamDelay: 0.6
   chargeRecoil: 1
+--- !u!82 &8383633620112111099
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3311827090434395984}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 4766088385294850217, guid: f15dcb6457f70a441bcbf1baf60da25f, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &5758492815818626385
 GameObject:
   m_ObjectHideFlags: 0
