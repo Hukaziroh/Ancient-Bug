@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEditor.Experimental.GraphView;
 using UnityEngineInternal;
+
 public class Boss2 : MonoBehaviour, IDamageable
 {
     public enum Boss2State
@@ -38,24 +39,32 @@ public class Boss2 : MonoBehaviour, IDamageable
     public int dropGold = 2000;
     public GameObject portalPrefab;
 
+    [Header("사운드 설정")]
+    public AudioClip deathSound;        
+    public AudioClip basicAttackSound;  
+    public AudioClip rangedAttackSound; 
+    public AudioClip chargeLoopSound;   
+    public AudioClip chargeSlamSound;   
+    public AudioSource loopAudioSource;  
+
     [Header("타이머")]
     public float idleDelay = 1.5f;
 
     [Space(10)]
-    public float basicAnticipation = 0.2f; 
-    public float basicHitDelay = 0.3f;    
-    public float basicRecoil = 0.5f;      
+    public float basicAnticipation = 0.2f;
+    public float basicHitDelay = 0.3f;
+    public float basicRecoil = 0.5f;
 
     [Space(10)]
-    public float rangedAnticipation = 0.4f; 
-    public float rangedRecoil = 0.6f;      
+    public float rangedAnticipation = 0.4f;
+    public float rangedRecoil = 0.6f;
 
     [Space(10)]
-    public float chargeWarningTime = 0.6f; 
-    public float chargeSpeed = 12f;         
-    public float chargeDuration = 0.4f;     
-    public float chargeSlamDelay = 0.2f;   
-    public float chargeRecoil = 1f;       
+    public float chargeWarningTime = 0.6f;
+    public float chargeSpeed = 12f;
+    public float chargeDuration = 0.4f;
+    public float chargeSlamDelay = 0.2f;
+    public float chargeRecoil = 1f;
 
     private Animator anim;
     private Rigidbody2D rb;
@@ -70,7 +79,6 @@ public class Boss2 : MonoBehaviour, IDamageable
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null) player = playerObj.transform;
-
     }
 
     private void Start()
@@ -90,7 +98,7 @@ public class Boss2 : MonoBehaviour, IDamageable
     {
         if (currentState == Boss2State.Dead || player == null) return;
 
-        if(currentState == Boss2State.Walk || currentState == Boss2State.Idle)
+        if (currentState == Boss2State.Walk || currentState == Boss2State.Idle)
         {
             LookAtPlayer();
         }
@@ -100,12 +108,12 @@ public class Boss2 : MonoBehaviour, IDamageable
     {
         if (currentState == Boss2State.Dead || player == null) return;
 
-        if(currentState == Boss2State.Walk)
+        if (currentState == Boss2State.Walk)
         {
             Vector2 direction = (player.position - transform.position).normalized;
             rb.linearVelocity = new Vector2(direction.x * moveSpeed, rb.linearVelocity.y);
         }
-        else if(currentState != Boss2State.ChargeAttack)
+        else if (currentState != Boss2State.ChargeAttack)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
         }
@@ -118,7 +126,7 @@ public class Boss2 : MonoBehaviour, IDamageable
 
         if (currentState == Boss2State.Walk) anim.Play("Run");
         else if (currentState == Boss2State.Idle) anim.Play("Idle");
-    }    
+    }
 
     private void LookAtPlayer()
     {
@@ -142,17 +150,17 @@ public class Boss2 : MonoBehaviour, IDamageable
                 yield return new WaitForSeconds(idleDelay);
                 ChangeState(Boss2State.Walk);
             }
-            else if(currentState == Boss2State.Walk)
+            else if (currentState == Boss2State.Walk)
             {
                 float distance = Vector2.Distance(transform.position, player.position);
 
-                if(distance <= meleeAttackRange)
+                if (distance <= meleeAttackRange)
                 {
                     if (Random.Range(0, 100) > 70)
                         StartCoroutine(BasicAttackRoutine());
                     else StartCoroutine(ChargeAttackRoutine());
                 }
-                else if(distance <= chargeAttackRange)
+                else if (distance <= chargeAttackRange)
                 {
                     if (Random.Range(0, 100) < 60) StartCoroutine(ChargeAttackRoutine());
                     else StartCoroutine(RangedAttackRoutine());
@@ -163,7 +171,7 @@ public class Boss2 : MonoBehaviour, IDamageable
                 }
             }
             yield return null;
-        }      
+        }
     }
 
     private IEnumerator BasicAttackRoutine()
@@ -173,8 +181,13 @@ public class Boss2 : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(basicAnticipation);
 
         anim.Play("Attack1");
+
         yield return new WaitForSeconds(basicHitDelay);
 
+        if (basicAttackSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(basicAttackSound);
+        }
         ApplyMeleeDamage(basicDamage);
 
         yield return new WaitForSeconds(basicRecoil);
@@ -189,7 +202,12 @@ public class Boss2 : MonoBehaviour, IDamageable
 
         anim.Play("Attack1");
 
-        if(projectilePrefab != null && firePoint != null)
+        if (rangedAttackSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(rangedAttackSound);
+        }
+
+        if (projectilePrefab != null && firePoint != null)
         {
             GameObject projObj = EnemyProjectilePool.Instance.GetProjectile(projectilePrefab);
             if (projObj != null)
@@ -211,48 +229,54 @@ public class Boss2 : MonoBehaviour, IDamageable
         ChangeState(Boss2State.ChargeAttack);
         anim.Play("Idle");
 
-        float timer = 0;
-        while (timer < chargeWarningTime)
-        {
-            sr.color = Color.red;
-            yield return new WaitForSeconds(0.1f);
-            sr.color = Color.white;
-            yield return new WaitForSeconds(0.1f);
-            timer += 0.2f;
-        }
+        yield return new WaitForSeconds(chargeWarningTime);
 
         anim.Play("Run");
+
+        if (chargeLoopSound != null && loopAudioSource != null)
+        {
+            loopAudioSource.clip = chargeLoopSound;
+            loopAudioSource.loop = true;
+            loopAudioSource.Play();
+        }
+
         float chargeDir = transform.localScale.x > 0 ? 1f : -1f;
-
         float chargeTimer = 0f;
-        bool hasHitDuringCharge = false;
-
 
         while (chargeTimer < chargeDuration)
         {
             chargeTimer += Time.deltaTime;
             rb.linearVelocity = new Vector2(chargeDir * chargeSpeed, rb.linearVelocity.y);
-            if (!hasHitDuringCharge)
+
+            Vector2 hitCenter = (Vector2)transform.position + new Vector2(chargeDir * hitOffset, 0f);
+            Collider2D hit = Physics2D.OverlapBox(hitCenter, attackHitBox, 0f, playerLayer);
+
+            if (hit != null)
             {
-                Vector2 hitCenter = (Vector2)transform.position + new Vector2(chargeDir * hitOffset, 0f);
-                Collider2D hit = Physics2D.OverlapBox(hitCenter, attackHitBox, 0f, playerLayer);
-                if (hit != null)
+                IDamageable damageable = hit.GetComponent<IDamageable>();
+                if (damageable != null)
                 {
-                    IDamageable damageable = hit.GetComponent<IDamageable>();
-                    if (damageable != null)
-                    {
-                        damageable.TakeDamage(chargeMoveDamage); 
-                        hasHitDuringCharge = true;
-                    }
+                    damageable.TakeDamage(chargeMoveDamage);
                 }
+
+                break;
             }
+
             yield return null;
         }
 
         rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
+        if (loopAudioSource != null) loopAudioSource.Stop();
+
         anim.Play("Attack2");
+
         yield return new WaitForSeconds(chargeSlamDelay);
+
+        if (chargeSlamSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(chargeSlamSound);
+        }
 
         ApplyMeleeDamage(chargeDamage);
 
@@ -266,7 +290,7 @@ public class Boss2 : MonoBehaviour, IDamageable
         Vector2 hitCenter = (Vector2)transform.position + new Vector2(attackDir * hitOffset, 0f);
 
         Collider2D hit = Physics2D.OverlapBox(hitCenter, attackHitBox, 0f, playerLayer);
-        if(hit != null)
+        if (hit != null)
         {
             IDamageable damageable = hit.GetComponent<IDamageable>();
             if (damageable != null) damageable.TakeDamage(damageAmount);
@@ -275,11 +299,11 @@ public class Boss2 : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damage)
     {
-        if(currentState == Boss2State.Dead) return;
+        if (currentState == Boss2State.Dead) return;
 
         currentHp -= damage;
         if (BossHealthBar.Instance != null) BossHealthBar.Instance.UpdateHP(currentHp, maxHp);
-       
+
         if (sr != null) StartCoroutine(HitFlashRoutine());
 
         if (currentHp <= 0) Die();
@@ -289,14 +313,20 @@ public class Boss2 : MonoBehaviour, IDamageable
     {
         sr.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        if (currentState != Boss2State.ChargeAttack)
-            sr.color = Color.white;
+        sr.color = Color.white;
     }
 
     private void Die()
     {
         if (currentState == Boss2State.Dead) return;
         ChangeState(Boss2State.Dead);
+
+        if (loopAudioSource != null) loopAudioSource.Stop();
+
+        if (deathSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(deathSound);
+        }
 
         if (BossHealthBar.Instance != null) BossHealthBar.Instance.HideBossUI();
 
@@ -317,7 +347,12 @@ public class Boss2 : MonoBehaviour, IDamageable
         if (activePlayer != null)
         {
             Player playerScript = activePlayer.GetComponent<Player>();
-            if (playerScript != null) playerScript.AddGold(dropGold);
+            if (playerScript != null)
+            {
+                playerScript.AddGold(dropGold);
+                playerScript.Heal(playerScript.maxHP * 0.2f);
+            }
+           
         }
 
         StartCoroutine(DeathRoutine());
@@ -331,7 +366,7 @@ public class Boss2 : MonoBehaviour, IDamageable
     }
 
     private void OnDrawGizmosSelected()
-    {       
+    {
         float attackDir = (transform.localScale.x > 0) ? 1f : -1f;
         Vector3 hitCenter = transform.position + new Vector3(attackDir * hitOffset, 0f, 0f);
 
@@ -349,6 +384,4 @@ public class Boss2 : MonoBehaviour, IDamageable
         Gizmos.color = Color.cyan;
         Gizmos.DrawWireSphere(transform.position, rangedAttackRange);
     }
-
-
 }

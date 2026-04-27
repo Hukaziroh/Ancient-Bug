@@ -23,6 +23,11 @@ public class PlayerAttack : MonoBehaviour
     public float lightingYOffset = 1.5f;
     public float lightningStrikeDelay = 0.3f;
 
+    [Header("사운드 설정")]
+    public AudioClip attackSwingSound; 
+    public AudioClip attackHitSound;  
+    public AudioClip skillSound;      
+
     Animator anim;
     Vector2 moveInput;
 
@@ -42,6 +47,11 @@ public class PlayerAttack : MonoBehaviour
 
         if (value.isPressed)
         {
+            if (attackSwingSound != null && SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(attackSwingSound);
+            }
+
             if (moveInput.y > 0.5f)
             {
                 anim.SetTrigger("UpAttack");
@@ -60,6 +70,11 @@ public class PlayerAttack : MonoBehaviour
 
         if (value.isPressed)
         {
+            if (skillSound != null && SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(skillSound);
+            }
+
             anim.SetTrigger("IsSkill");
             UIManager.Instance.skillUI.UseSkill(5f);
             PerformSkill();
@@ -71,6 +86,7 @@ public class PlayerAttack : MonoBehaviour
         if (attackPoint == null) return;
 
         Collider2D[] hitEnemies = Physics2D.OverlapBoxAll(attackPoint.position, attackBoxSize, 0f, enemyLayer);
+        bool hasHitTarget = false;
 
         foreach (Collider2D enemy in hitEnemies)
         {
@@ -78,7 +94,13 @@ public class PlayerAttack : MonoBehaviour
             if (damageable != null)
             {
                 damageable.TakeDamage(AttackDamage);
+                hasHitTarget = true; 
             }
+        }
+
+        if (hasHitTarget && attackHitSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(attackHitSound);
         }
     }
 

@@ -6,9 +6,24 @@ public class TentacleFlower : MonoBehaviour
     public float damage = 10f;
     public Collider2D tentacleCollider;
 
+    [Header("사운드 설정")]
+    public AudioClip attackSound;
+    public float soundRange = 10f;
+
+    private Transform player;
+
+    private void Awake()
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            player = playerObj.transform;
+        }
+    }
+
     void Start()
     {
-        if(tentacleCollider != null)
+        if (tentacleCollider != null)
         {
             tentacleCollider.enabled = false;
         }
@@ -17,6 +32,14 @@ public class TentacleFlower : MonoBehaviour
     public void EnableTentacle()
     {
         if (tentacleCollider != null) tentacleCollider.enabled = true;
+
+        if (attackSound != null && SoundManager.Instance != null && player != null)
+        {
+            if (Vector2.Distance(transform.position, player.position) <= soundRange)
+            {
+                SoundManager.Instance.PlaySFX(attackSound);
+            }
+        }
     }
 
     public void DisableTentacle()
@@ -26,10 +49,10 @@ public class TentacleFlower : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if (collision.CompareTag("Player"))
         {
-            Player player = collision.GetComponent<Player>();
-            if (player != null && player.isInvincible) return;
+            Player playerComponent = collision.GetComponent<Player>();
+            if (playerComponent != null && playerComponent.isInvincible) return;
 
             IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null) damageable.TakeDamage(damage);

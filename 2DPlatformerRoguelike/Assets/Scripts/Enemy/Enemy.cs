@@ -19,6 +19,10 @@ public class Enemy : MonoBehaviour, IDamageable
     [Header("보상 설정")]
     public int dropGold = 50;
 
+    [Header("사운드 설정")]
+    public AudioClip deathSound;
+    public AudioClip attackSound;
+
     private float currentHP;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -113,6 +117,11 @@ public class Enemy : MonoBehaviour, IDamageable
     {
         if (attackPoint == null) return;
 
+        if (attackSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(attackSound);
+        }
+
         GameObject projObj = EnemyProjectilePool.Instance.GetProjectile(projectilePrefab); ;
         if (projObj == null)
         {
@@ -160,6 +169,11 @@ public class Enemy : MonoBehaviour, IDamageable
         if (isDead) return;
         isDead = true;
 
+        if (deathSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(deathSound);
+        }
+
         if (RoomManager.Instance != null)
         {
             RoomManager.Instance.OnEnemyKilled();
@@ -182,7 +196,7 @@ public class Enemy : MonoBehaviour, IDamageable
         {
             Player playerScript = activePlayer.GetComponent<Player>();
             if (playerScript != null)
-            {             
+            {
                 playerScript.AddGold(dropGold);
             }
         }

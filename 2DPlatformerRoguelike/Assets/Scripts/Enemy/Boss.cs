@@ -10,7 +10,6 @@ public class Boss : MonoBehaviour, IDamageable
         RoarAttack,
         RollAttack,
         SpikeAttack,
-        Tired,
         Dead
     }
 
@@ -28,7 +27,7 @@ public class Boss : MonoBehaviour, IDamageable
     public float spikeDamage = 20f;
     public float roarDamage = 15f;
     public float rollDamage = 30f;
-    public bool isSpikeActive = false; 
+    public bool isSpikeActive = false;
     public float reflectDamage = 10f;
 
     [Header("타격 판정 설정")]
@@ -42,32 +41,41 @@ public class Boss : MonoBehaviour, IDamageable
     public int dropGold = 1000;
     public GameObject portalPrefab;
 
+    [Header("이펙트 설정")]
+    public GameObject roarEffectPrefab;
+    public Transform roarEffectPoint;
+
+    [Header("사운드 설정")]
+    public AudioClip deathSound;
+    public AudioClip roarSound;
+    public AudioClip rollSound;
+    public AudioClip spikeSound;
+    public AudioSource loopAudioSource;
+
     [Header("패턴 전환 딜레이")]
     public float idleToWalkDelay = 1.5f;
 
     [Header("구르기(Roll) 시간 설정")]
     public float rollAnticipation = 0.5f;
-    public float rollDuration = 3f;      
-    public float rollRecoil = 0.6f;       
+    public float rollDuration = 3f;
+    public float rollRecoil = 0.6f;
 
     [Header("가시(Spike) 시간 설정")]
-    public float spikeAnticipation = 0.2f; 
-    public float spikeHitDelay = 1f;       
+    public float spikeAnticipation = 0.2f;
+    public float spikeHitDelay = 1f;
     public float spikePostHitDelay = 0.15f;
-    public float spikeRecoil = 0.2f;       
+    public float spikeRecoil = 0.2f;
 
     [Header("포효(Roar) 시간 설정")]
-    public float roarAnticipation = 0.5f;   
-    public float roarHitDelay = 0.2f;      
-    public float roarPostHitDelay = 0.8f;  
-    public float roarRecoil = 0.5f;        
+    public float roarAnticipation = 0.5f;
+    public float roarHitDelay = 0.2f;
+    public float roarPostHitDelay = 0.8f;
+    public float roarRecoil = 0.5f;
 
-    [Header("특수 상태 시간 설정")]
-
-    public float tiredDuration = 5f;
     private Animator anim;
     private Rigidbody2D rb;
     private Transform player;
+
     private SpriteRenderer sr;
 
     private void Awake()
@@ -89,7 +97,7 @@ public class Boss : MonoBehaviour, IDamageable
             BossHealthBar.Instance.ShowBossUI();
             BossHealthBar.Instance.UpdateHP(currentHp, maxHp);
         }
-      
+
         ChangeState(BossState.Idle);
         StartCoroutine(ThinkRoutine());
     }
@@ -159,9 +167,19 @@ public class Boss : MonoBehaviour, IDamageable
 
                 if (distance <= meleeAttackRange)
                 {
-                    int rand = Random.Range(0, 2);
-                    if (rand == 0) StartCoroutine(SpikeAttackRoutine());
-                    else StartCoroutine(RoarAttackRoutine());
+                    int rand = Random.Range(0, 100);
+                    if (rand < 20)
+                    {
+                        StartCoroutine(RollAttackRoutine());
+                    }
+                    else if (rand < 60)
+                    {
+                        StartCoroutine(SpikeAttackRoutine());
+                    }
+                    else
+                    {
+                        StartCoroutine(RoarAttackRoutine());
+                    }
                 }
                 else if (distance >= rollAttackRange)
                 {
@@ -184,12 +202,19 @@ public class Boss : MonoBehaviour, IDamageable
 
         anim.Play("RollAttack");
 
+        if (rollSound != null && loopAudioSource != null)
+        {
+            loopAudioSource.clip = rollSound;
+            loopAudioSource.loop = true;
+            loopAudioSource.Play();
+        }
+
         float rollDirection = transform.localScale.x < 0 ? 1f : -1f;
-        float rollDuration = 3f;
+        float rollDurationTimer = 3f;
         float timer = 0f;
         bool hasHitPlayer = false;
 
-        while (timer < rollDuration)
+        while (timer < rollDurationTimer)
         {
             timer += Time.deltaTime;
             rb.linearVelocity = new Vector2(rollDirection * moveSpeed * 3f, rb.linearVelocity.y);
@@ -209,6 +234,9 @@ public class Boss : MonoBehaviour, IDamageable
             }
             yield return null;
         }
+
+        if (loopAudioSource != null) loopAudioSource.Stop();
+
         anim.Play("RollAttackRecoil");
         rb.linearVelocity = Vector2.zero;
         yield return new WaitForSeconds(rollRecoil);
@@ -223,6 +251,13 @@ public class Boss : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(spikeAnticipation);
 
         anim.Play("SpikeAttack");
+
+        if (spikeSound != null && loopAudioSource != null)
+        {
+            loopAudioSource.clip = spikeSound;
+            loopAudioSource.loop = true;
+            loopAudioSource.Play();
+        }
 
         isSpikeActive = true;
 
@@ -242,6 +277,8 @@ public class Boss : MonoBehaviour, IDamageable
 
         isSpikeActive = false;
 
+        if (loopAudioSource != null) loopAudioSource.Stop();
+
         anim.Play("SpikeAttackRecoil");
         yield return new WaitForSeconds(spikeRecoil);
 
@@ -256,21 +293,38 @@ public class Boss : MonoBehaviour, IDamageable
 
         anim.Play("Roar");
 
-        yield return new WaitForSeconds(roarHitDelay);
-
-        Collider2D hit = Physics2D.OverlapCircle(transform.position, roarRadius, playerLayer);
-        if (hit != null)
+        if (roarSound != null && SoundManager.Instance != null)
         {
-            IDamageable damageable = hit.GetComponent<IDamageable>();
-            if (damageable != null) damageable.TakeDamage(roarDamage);
+            SoundManager.Instance.PlaySFX(roarSound);
+
+            if (roarEffectPrefab != null)
+            {
+                Vector3 spawnPos = (roarEffectPoint != null) ? roarEffectPoint.position : transform.position;
+
+                GameObject effect = Instantiate(roarEffectPrefab, spawnPos, Quaternion.identity);
+
+                float currentFacingDir = Mathf.Sign(transform.localScale.x);
+                Vector3 effectScale = effect.transform.localScale;
+                effect.transform.localScale = new Vector3(effectScale.x * currentFacingDir, effectScale.y, effectScale.z);
+                Destroy(effect, 2f);
+            }
+
+            yield return new WaitForSeconds(roarHitDelay);
+
+            Collider2D hit = Physics2D.OverlapCircle(transform.position, roarRadius, playerLayer);
+            if (hit != null)
+            {
+                IDamageable damageable = hit.GetComponent<IDamageable>();
+                if (damageable != null) damageable.TakeDamage(roarDamage);
+            }
+
+            yield return new WaitForSeconds(roarPostHitDelay);
+
+            anim.Play("RoarRecoil");
+            yield return new WaitForSeconds(roarRecoil);
+
+            ChangeState(BossState.Idle);
         }
-
-        yield return new WaitForSeconds(roarPostHitDelay);
-
-        anim.Play("RoarRecoil");
-        yield return new WaitForSeconds(roarRecoil);
-
-        ChangeState(BossState.Idle);
     }
 
     public void TakeDamage(float damage)
@@ -284,10 +338,10 @@ public class Boss : MonoBehaviour, IDamageable
                 IDamageable playerDamage = player.GetComponent<IDamageable>();
                 if (playerDamage != null)
                 {
-                    playerDamage.TakeDamage(reflectDamage); 
+                    playerDamage.TakeDamage(reflectDamage);
                 }
             }
-            return; 
+            return;
         }
 
         currentHp -= damage;
@@ -296,8 +350,8 @@ public class Boss : MonoBehaviour, IDamageable
         if (sr != null) StartCoroutine(HitFlashRoutine());
 
         if (currentHp <= 0) Die();
-        else if (currentHp == 300f) StartCoroutine(TiredRoutine());
     }
+
     private IEnumerator HitFlashRoutine()
     {
         sr.color = Color.red;
@@ -305,18 +359,17 @@ public class Boss : MonoBehaviour, IDamageable
         sr.color = Color.white;
     }
 
-    private IEnumerator TiredRoutine()
-    {
-        ChangeState(BossState.Tired);
-        anim.Play("Tired");
-        yield return new WaitForSeconds(5f);
-        ChangeState(BossState.Idle);
-    }
-
     private void Die()
     {
         if (currentState == BossState.Dead) return;
         ChangeState(BossState.Dead);
+
+        if (loopAudioSource != null) loopAudioSource.Stop();
+
+        if (deathSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(deathSound);
+        }
 
         if (BossHealthBar.Instance != null) BossHealthBar.Instance.HideBossUI();
 
@@ -350,10 +403,12 @@ public class Boss : MonoBehaviour, IDamageable
             if (playerScript != null)
             {
                 playerScript.AddGold(dropGold);
+                playerScript.Heal(playerScript.maxHP * 0.2f);
             }
             StartCoroutine(DeathRoutine());
         }
     }
+
     private IEnumerator DeathRoutine()
     {
         yield return new WaitForSeconds(3f);
@@ -362,12 +417,6 @@ public class Boss : MonoBehaviour, IDamageable
             Instantiate(portalPrefab, transform.position, Quaternion.identity);
         }
         Destroy(gameObject);
-    }
-
-    private IEnumerator GoToLobbyRoutine()
-    {
-        yield return new WaitForSeconds(3f);
-        UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
     }
 
     private void OnDrawGizmosSelected()

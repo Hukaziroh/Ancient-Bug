@@ -2,9 +2,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 using UnityEngine.InputSystem;
+
 public class Player : MonoBehaviour, IDamageable
 {
-   
     [Header("체력 설정")]
     public float maxHP = 200f;
     private float currentHP;
@@ -14,8 +14,11 @@ public class Player : MonoBehaviour, IDamageable
     public int currentStone = 0;
 
     [Header("피격 및 무적 설정")]
-    public float invincibilityDuration = 2f; 
+    public float invincibilityDuration = 2f;
     public bool isInvincible { get; private set; }
+
+    [Header("사운드 설정")]
+    public AudioClip deathSound;
 
     private Animator anim;
     private SpriteRenderer spriteRenderer;
@@ -35,7 +38,7 @@ public class Player : MonoBehaviour, IDamageable
     }
 
     public void TakeDamage(float damage)
-    {    
+    {
         PlayerMovement pm = GetComponent<PlayerMovement>();
         bool isDashing = (pm != null && pm.isDashing);
 
@@ -48,7 +51,7 @@ public class Player : MonoBehaviour, IDamageable
             Die();
         }
         else
-        {  
+        {
             StartCoroutine(InvincibilityRoutine());
         }
     }
@@ -59,14 +62,14 @@ public class Player : MonoBehaviour, IDamageable
 
         float timer = 0f;
         while (timer < invincibilityDuration)
-        {   
+        {
             spriteRenderer.color = new Color(1, 1, 1, 0.5f);
             yield return new WaitForSeconds(0.1f);
 
             spriteRenderer.color = new Color(1, 1, 1, 1f);
             yield return new WaitForSeconds(0.1f);
 
-            timer += 0.2f; 
+            timer += 0.2f;
         }
 
         spriteRenderer.color = Color.white;
@@ -77,6 +80,11 @@ public class Player : MonoBehaviour, IDamageable
     {
         if (IsDead) return;
         IsDead = true;
+
+        if (deathSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(deathSound);
+        }
 
         if (anim != null)
         {
@@ -101,16 +109,14 @@ public class Player : MonoBehaviour, IDamageable
         gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
 
         StartCoroutine(GoToLobbyRoutine());
-
-        // TODO: 기획서에 명시된 대로 해당 회차 골드 소멸 및 로비(마을) 귀환 로직 추가 예정
     }
 
     private System.Collections.IEnumerator GoToLobbyRoutine()
     {
-        yield return new WaitForSeconds(3f); 
+        yield return new WaitForSeconds(3f);
         UnityEngine.SceneManagement.SceneManager.LoadScene("Lobby");
-
     }
+
     public void AddGold(int amount)
     {
         currentGold += amount;
@@ -125,7 +131,7 @@ public class Player : MonoBehaviour, IDamageable
 
     public bool SpendGold(int amount)
     {
-        if(currentGold >=amount)
+        if (currentGold >= amount)
         {
             currentGold -= amount;
             UIManager.Instance.UpdateGold(currentGold);

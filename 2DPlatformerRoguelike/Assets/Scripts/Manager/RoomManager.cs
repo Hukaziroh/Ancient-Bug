@@ -20,6 +20,10 @@ public class RoomManager : MonoBehaviour
     public List<LevelData> levels = new List<LevelData>();
     public int currentLevelIndex = 0;
 
+    [Header("사운드 설정")]
+    public AudioClip[] stageBgms;
+    public AudioClip[] bossBgms;
+
     [Header("던전 진행도 설정")]
     public int totalRooms = 6;
     public Transform player;
@@ -93,6 +97,37 @@ public class RoomManager : MonoBehaviour
     {
         isTransitioning = true;
 
+        if (EnemyProjectilePool.Instance != null)
+        {
+            foreach (Transform child in EnemyProjectilePool.Instance.transform)
+            {
+                if (child.gameObject.activeSelf)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+
+        if (SoundManager.Instance != null)
+        {
+            int nextRoomCount = currentRoomCount + 1;
+
+            if (nextRoomCount >= totalRooms)
+            {
+                if (currentLevelIndex < bossBgms.Length && bossBgms[currentLevelIndex] != null)
+                {
+                    SoundManager.Instance.PlayBGM(bossBgms[currentLevelIndex]);
+                }
+            }
+            else
+            {
+                if (currentLevelIndex < stageBgms.Length && stageBgms[currentLevelIndex] != null)
+                {
+                    SoundManager.Instance.PlayBGM(stageBgms[currentLevelIndex]);
+                }
+            }
+        }
+
         if (currentRoomCount > 0)
         {
             float fadeTimer = 0f;
@@ -137,7 +172,9 @@ public class RoomManager : MonoBehaviour
         int fireEnemies = currentRoom.GetComponentsInChildren<FREnemy>().Length;
         int bosses = currentRoom.GetComponentsInChildren<Boss>().Length;
         int boss2 = currentRoom.GetComponentsInChildren<Boss2>().Length;
-        remainingEnemies = normalEnemies + fireEnemies + bosses;
+        int boss3 = currentRoom.GetComponentsInChildren<Boss3>().Length;
+
+        remainingEnemies = normalEnemies + fireEnemies + bosses + boss2 + boss3;
 
         if (UIManager.Instance != null)
         {

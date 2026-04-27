@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class ShopManager : MonoBehaviour
 {
-
-
     public static ShopManager Instance;
     [Header("UI 연결")]
     public GameObject shopPanel;
@@ -12,6 +10,10 @@ public class ShopManager : MonoBehaviour
     public int healCost = 50;
     public int maxHpCost = 150;
     public int attackCost = 200;
+
+    [Header("사운드 설정")]
+    public AudioClip buySound; 
+    public AudioClip failSound;
 
     private Player player;
 
@@ -39,38 +41,50 @@ public class ShopManager : MonoBehaviour
     {
         if (player.SpendGold(healCost))
         {
+            if (buySound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(buySound);
             player.Heal(30f);
         }
-        else Debug.Log("돈없음");
+        else
+        {
+            if (failSound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(failSound);
+        }
     }
 
     public void BuyMaxHp()
     {
         if (player.SpendGold(maxHpCost))
         {
+            if (buySound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(buySound);
             player.IncreaseMaxHp(20f);
         }
-        else Debug.Log("돈없음");
+        else
+        {
+            if (failSound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(failSound);
+        }
     }
 
     public void BuyAttackUp()
     {
-        if(player.SpendGold(attackCost))
+        if (player.SpendGold(attackCost))
         {
+            if (buySound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(buySound);
             PlayerAttack pAttack = player.GetComponent<PlayerAttack>();
-            if(pAttack != null)
+            if (pAttack != null)
             {
                 pAttack.AttackDamage += 5f;
-            }          
+            }
         }
-        else Debug.Log("돈없음");
+        else
+        {
+            if (failSound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(failSound);
+        }
     }
 
     public void CloseShop()
     {
         if (shopPanel != null) shopPanel.SetActive(false);
 
-        if(isOpenedFromDoor)
+        if (isOpenedFromDoor)
         {
             isOpenedFromDoor = false;
             Time.timeScale = 1f;

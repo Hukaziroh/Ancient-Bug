@@ -20,6 +20,10 @@ public class FREnemy : MonoBehaviour, IDamageable
     [Header("보상 설정")]
     public int dropGold = 50;
 
+    [Header("사운드 설정")]
+    public AudioClip deathSound;
+    public AudioClip attackSound;
+
     private float currentHP;
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -48,7 +52,7 @@ public class FREnemy : MonoBehaviour, IDamageable
     }
 
     private void Update()
-    {      
+    {
         if (isDead || isAttacking) return;
 
         if (player != null && Vector2.Distance(transform.position, player.position) <= attackRange)
@@ -94,7 +98,7 @@ public class FREnemy : MonoBehaviour, IDamageable
     {
         if (player == null) return;
         bool isPlayerOnRight = player.position.x > transform.position.x;
-   
+
         if (isPlayerOnRight != movingRight)
         {
             Flip();
@@ -103,14 +107,19 @@ public class FREnemy : MonoBehaviour, IDamageable
 
     private IEnumerator BreathAttackRoutine()
     {
-        isAttacking = true; 
+        isAttacking = true;
 
-        rb.linearVelocity = Vector2.zero; 
+        rb.linearVelocity = Vector2.zero;
         if (anim != null) anim.SetBool("IsMoving", false);
 
         FacePlayer();
 
         if (anim != null) anim.SetTrigger("Attack");
+
+        if (attackSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(attackSound);
+        }
 
         if (projectilePrefab != null && attackPoint != null)
         {
@@ -132,7 +141,7 @@ public class FREnemy : MonoBehaviour, IDamageable
 
 
         yield return new WaitForSeconds(breathDuration);
-   
+
         yield return new WaitForSeconds(1.5f);
 
         isAttacking = false;
@@ -163,6 +172,11 @@ public class FREnemy : MonoBehaviour, IDamageable
         if (isDead) return;
         isDead = true;
 
+        if (deathSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(deathSound);
+
+        }
         if (RoomManager.Instance != null)
         {
             RoomManager.Instance.OnEnemyKilled();

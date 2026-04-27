@@ -24,7 +24,7 @@ public class Boss3 : MonoBehaviour, IDamageable
 
     [Header("사거리 설정")]
     public float meleeAttackRange = 2f;
-    public float runAttackRange = 7f;
+    public float runAttackRange = 4f;
 
     [Header("데미지 설정")]
     public float attack1Damage = 15f;
@@ -48,6 +48,14 @@ public class Boss3 : MonoBehaviour, IDamageable
     public int dropGold = 1000;
     public GameObject portalPrefab;
     public float idleToWalkDelay = 1f;
+
+    [Header("사운드 설정")]
+    public AudioClip deathSound;
+    public AudioClip attack1Sound;
+    public AudioClip attack2Sound;
+    public AudioClip attack3Sound;
+    public AudioClip runAttackSound;
+    public AudioSource loopAudioSource;
 
     private Animator anim;
     private Rigidbody2D rb;
@@ -164,6 +172,11 @@ public class Boss3 : MonoBehaviour, IDamageable
         ChangeState(Boss3State.Attack1);
         anim.Play("Attack1");
 
+        if (attack1Sound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(attack1Sound);
+        }
+
         yield return new WaitForSeconds(0.4f);
 
         float currentFacingDir = Mathf.Sign(transform.localScale.x);
@@ -181,6 +194,11 @@ public class Boss3 : MonoBehaviour, IDamageable
         ChangeState(Boss3State.Attack2);
         anim.Play("Attack2");
 
+        if (attack2Sound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(attack2Sound);
+        }
+
         yield return new WaitForSeconds(0.5f);
 
         Collider2D hit = Physics2D.OverlapCircle(transform.position, attack2Radius, playerLayer);
@@ -194,6 +212,11 @@ public class Boss3 : MonoBehaviour, IDamageable
     {
         ChangeState(Boss3State.Attack3);
         anim.Play("Attack3");
+
+        if (attack3Sound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(attack3Sound);
+        }
 
         yield return new WaitForSeconds(0.3f);
 
@@ -216,6 +239,14 @@ public class Boss3 : MonoBehaviour, IDamageable
         sr.color = Color.white;
 
         anim.Play("Run");
+
+        if (runAttackSound != null && loopAudioSource != null)
+        {
+            loopAudioSource.clip = runAttackSound;
+            loopAudioSource.loop = true;
+            loopAudioSource.Play();
+        }
+
         float runDir = Mathf.Sign(transform.localScale.x);
         int currentBounces = 0;
         bool hasHitPlayer = false;
@@ -248,7 +279,9 @@ public class Boss3 : MonoBehaviour, IDamageable
             yield return null;
         }
 
-        anim.Play("Walk"); 
+        if (loopAudioSource != null) loopAudioSource.Stop();
+
+        anim.Play("Walk");
         float targetCenterX = 7f;
 
         float returnDir = (targetCenterX > transform.position.x) ? 1f : -1f;
@@ -297,6 +330,13 @@ public class Boss3 : MonoBehaviour, IDamageable
         if (currentState == Boss3State.Dead) return;
         ChangeState(Boss3State.Dead);
 
+        if (loopAudioSource != null) loopAudioSource.Stop();
+
+        if (deathSound != null && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(deathSound);
+        }
+
         if (BossHealthBar.Instance != null) BossHealthBar.Instance.HideBossUI();
         if (sr != null) sr.color = Color.white;
 
@@ -314,7 +354,12 @@ public class Boss3 : MonoBehaviour, IDamageable
         if (player != null)
         {
             Player playerScript = player.GetComponent<Player>();
-            if (playerScript != null) playerScript.AddGold(dropGold);
+            if (playerScript != null)
+            {
+                playerScript.AddGold(dropGold);
+                playerScript.Heal(playerScript.maxHP * 0.2f);
+            }
+          
         }
         StartCoroutine(DeathRoutine());
     }

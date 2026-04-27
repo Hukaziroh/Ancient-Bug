@@ -14,16 +14,16 @@ public class PlayerMovement : MonoBehaviour
     public float castDistance = 0.1f;
     private int currentJumpCount;
     public LayerMask groundLayer;
-    
+
     [Header("대시 설정")]
     public float dashSpeed = 20f;
     public float dashDuration = 0.05f;
-    public int maxDashCount = 2;       
+    public int maxDashCount = 2;
     public float dashCooldown = 1f;
     int currentDashCount;
     Coroutine cooldownCoroutine;
-    
-    float defaultGravity; 
+
+    float defaultGravity;
     Coroutine dashCoroutine;
 
     [Header("활강 설정")]
@@ -31,11 +31,21 @@ public class PlayerMovement : MonoBehaviour
     private bool isJumpHolding;
 
     [Header("넉백 설정")]
-    public float knockbackForce = 10f;     
-    public float knockbackUpForce = 5f;    
-    public float knockbackDuration = 0.2f; 
+    public float knockbackForce = 10f;
+    public float knockbackUpForce = 5f;
+    public float knockbackDuration = 0.2f;
     public bool isKnockbacked { get; private set; }
     public bool isDashing { get; private set; }
+
+    [Header("단발성 사운드 설정")]
+    public AudioClip jumpSound;
+    public AudioClip doubleJumpSound;
+    public AudioClip dashSound;
+
+    [Header("지속성(루프) 사운드 설정")]
+    public AudioClip walkSound;
+    public AudioClip glideSound;
+    public AudioSource loopAudioSource; 
 
     Rigidbody2D rb;
     CapsuleCollider2D capsuleCollider;
@@ -56,7 +66,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (isDashing || isKnockbacked) return;
+        if (isDashing || isKnockbacked)
+        {
+            StopLoopSound();
+            return;
+        }
 
         isGrounded = CheckGrounded();
 
@@ -70,23 +84,58 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, -fastFallSpeed);
         }
         else if (!isGrounded && rb.linearVelocity.y < 0f && isJumpHolding)
-        {          
+        {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Max(rb.linearVelocity.y, -glideFallSpeed));
         }
 
+        bool isMoving = Mathf.Abs(moveInput.x) > 0f;
         if (anim != null)
-        {         
-            bool isMoving = Mathf.Abs(moveInput.x) > 0f;
+        {
             anim.SetBool("IsMoving", isMoving);
         }
 
         anim.SetBool("IsGrounded", isGrounded);
         anim.SetFloat("VelocityY", rb.linearVelocity.y);
+
+        bool isGliding = !isGrounded && rb.linearVelocity.y < 0f && isJumpHolding;
+        bool isWalking = isGrounded && isMoving;
+
+        if (isGliding)
+        {
+            PlayLoopSound(glideSound);
+        }
+        else if (isWalking)
+        {
+            PlayLoopSound(walkSound);
+        }
+        else
+        {
+            StopLoopSound();
+        }
+    }
+
+    private void PlayLoopSound(AudioClip clip)
+    {
+        if (loopAudioSource == null || clip == null) return;
+
+        if (loopAudioSource.clip == clip && loopAudioSource.isPlaying) return;
+
+        loopAudioSource.clip = clip;
+        loopAudioSource.loop = true;
+        loopAudioSource.Play();
+    }
+
+    private void StopLoopSound()
+    {
+        if (loopAudioSource != null && loopAudioSource.isPlaying)
+        {
+            loopAudioSource.Stop();
+        }
     }
 
     private bool CheckGrounded()
-    {     
-        RaycastHit2D raycastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, Vector2.down, castDistance, groundLayer);       
+    {
+        RaycastHit2D raycastHit = Physics2D.BoxCast(capsuleCollider.bounds.center, capsuleCollider.bounds.size, 0f, Vector2.down, castDistance, groundLayer);
         return raycastHit.collider != null;
     }
 
@@ -104,6 +153,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (value.isPressed && currentJumpCount > 0 && moveInput.y > -0.5f)
         {
+            if (currentJumpCount == maxJumpCount)
+            {
+                if (jumpSound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(jumpSound);
+            }
+            else
+            {
+                if (doubleJumpSound != null && SoundManager.Instance != null) SoundManager.Instance.PlaySFX(doubleJumpSound);
+            }
+
             currentJumpCount--;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
         }
@@ -116,6 +174,11 @@ public class PlayerMovement : MonoBehaviour
         {
             currentDashCount--;
             UIManager.Instance.dashSkillUI.UseSkill(dashCooldown);
+
+            if (dashSound != null && SoundManager.Instance != null)
+            {
+                SoundManager.Instance.PlaySFX(dashSound);
+            }
 
             if (dashCoroutine != null)
             {
@@ -131,8 +194,6 @@ public class PlayerMovement : MonoBehaviour
             }
             cooldownCoroutine = StartCoroutine(DashCooldownRoutine());
         }
-
-
     }
 
     public void ApplyKnockback(Transform attacker)
@@ -150,7 +211,7 @@ public class PlayerMovement : MonoBehaviour
         rb.gravityScale = 0f;
         rb.constraints |= RigidbodyConstraints2D.FreezePositionY;
         rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, 0f);
-     
+
         yield return new WaitForSeconds(dashDuration);
 
         rb.gravityScale = defaultGravity;
@@ -159,10 +220,11 @@ public class PlayerMovement : MonoBehaviour
         if (anim != null) anim.SetBool("IsDashing", false);
         dashCoroutine = null;
     }
+
     private IEnumerator DashCooldownRoutine()
-    {     
+    {
         yield return new WaitForSeconds(dashCooldown);
-      
+
         currentDashCount = maxDashCount;
         cooldownCoroutine = null;
     }
