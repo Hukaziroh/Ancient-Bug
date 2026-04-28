@@ -44,11 +44,8 @@ public class FREnemy : MonoBehaviour, IDamageable
     private void Start()
     {
         if (statData != null) currentHP = statData.maxHP;
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-        }
+
+        if (Player.Instance != null) player = Player.Instance.transform;
     }
 
     private void Update()
@@ -190,16 +187,11 @@ public class FREnemy : MonoBehaviour, IDamageable
 
         rb.gravityScale = 0;
 
-        GameObject activePlayer = GameObject.FindGameObjectWithTag("Player");
-
-        if (activePlayer != null)
+        if (Player.Instance != null)
         {
-            Player playerScript = activePlayer.GetComponent<Player>();
-            if (playerScript != null)
-            {
-                playerScript.AddGold(dropGold);
-            }
+            Player.Instance.AddGold(dropGold);
         }
+
         Destroy(gameObject, 2f);
     }
 

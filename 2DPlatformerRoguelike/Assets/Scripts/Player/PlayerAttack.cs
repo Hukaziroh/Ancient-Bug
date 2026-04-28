@@ -128,7 +128,6 @@ public class PlayerAttack : MonoBehaviour
             float finalDamage = AttackDamage + skillDamage;
 
             StartCoroutine(DelayedDamageRoutine(target, lightning, finalDamage, lightningStrikeDelay));
-            StartCoroutine(ReleaseLightningRoutine(lightning, 1.6f));
         }
     }
 

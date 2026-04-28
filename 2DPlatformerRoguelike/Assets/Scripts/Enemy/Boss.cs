@@ -83,13 +83,12 @@ public class Boss : MonoBehaviour, IDamageable
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) player = playerObj.transform;
     }
 
     private void Start()
     {
+        if (Player.Instance != null) player = Player.Instance.transform;
+
         currentHp = maxHp;
 
         if (BossHealthBar.Instance != null)
@@ -333,13 +332,9 @@ public class Boss : MonoBehaviour, IDamageable
 
         if (isSpikeActive)
         {
-            if (player != null)
+            if (Player.Instance != null)
             {
-                IDamageable playerDamage = player.GetComponent<IDamageable>();
-                if (playerDamage != null)
-                {
-                    playerDamage.TakeDamage(reflectDamage);
-                }
+                Player.Instance.TakeDamage(reflectDamage);
             }
             return;
         }
@@ -396,15 +391,10 @@ public class Boss : MonoBehaviour, IDamageable
             RoomManager.Instance.OnEnemyKilled();
         }
 
-        GameObject activePlayer = GameObject.FindGameObjectWithTag("Player");
-        if (activePlayer != null)
+        if (Player.Instance != null)
         {
-            Player playerScript = activePlayer.GetComponent<Player>();
-            if (playerScript != null)
-            {
-                playerScript.AddGold(dropGold);
-                playerScript.Heal(playerScript.maxHP * 0.2f);
-            }
+            Player.Instance.AddGold(dropGold);
+            Player.Instance.Heal(Player.Instance.maxHP * 0.2f);
             StartCoroutine(DeathRoutine());
         }
     }

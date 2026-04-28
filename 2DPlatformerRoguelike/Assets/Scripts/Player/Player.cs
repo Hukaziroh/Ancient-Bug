@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour, IDamageable
 {
+    public static Player Instance;
+
     [Header("체력 설정")]
     public float maxHP = 200f;
     private float currentHP;
@@ -26,6 +28,7 @@ public class Player : MonoBehaviour, IDamageable
 
     private void Awake()
     {
+        Instance = this; 
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
     }

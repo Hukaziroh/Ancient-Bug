@@ -42,7 +42,14 @@ public class RoomManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -103,11 +110,10 @@ public class RoomManager : MonoBehaviour
             {
                 if (child.gameObject.activeSelf)
                 {
-                    child.gameObject.SetActive(false);
+                    child.SendMessage("ReturnToPool", SendMessageOptions.DontRequireReceiver);
                 }
             }
         }
-
         if (SoundManager.Instance != null)
         {
             int nextRoomCount = currentRoomCount + 1;
@@ -207,6 +213,15 @@ public class RoomManager : MonoBehaviour
         if (UIManager.Instance != null)
         {
             UIManager.Instance.UpdateEnemy(remainingEnemies);
+        }
+
+        if (remainingEnemies <= 0)
+        {
+            Door[] doors = FindObjectsOfType<Door>();
+            foreach (Door door in doors)
+            {
+                door.OpenDoor();
+            }
         }
     }
 }

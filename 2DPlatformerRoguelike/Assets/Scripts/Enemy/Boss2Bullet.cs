@@ -23,8 +23,8 @@ public class Boss2Bullet : MonoBehaviour, IProjectile
     public void Setup(Vector2 moveDirection, float attackDamage)
     {
         damage = attackDamage;
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) playerTarget = playerObj.transform;
+
+        if (Player.Instance != null) playerTarget = Player.Instance.transform;
 
         rb.linearVelocity = Vector2.zero;
         rb.angularVelocity = 0f;

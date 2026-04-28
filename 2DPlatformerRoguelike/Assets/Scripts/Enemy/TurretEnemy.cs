@@ -12,21 +12,14 @@ public class TurretEnemy : MonoBehaviour
 
     [Header("사운드 설정")]
     public AudioClip shootSound;
-    public float soundRange = 10f; 
+    public float soundRange = 10f;
 
     private Transform player;
 
-    private void Awake()
-    {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-        }
-    }
-
     private void Start()
     {
+        if (Player.Instance != null) player = Player.Instance.transform;
+
         StartCoroutine(ShootRoutine());
     }
 

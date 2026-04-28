@@ -17,19 +17,19 @@ public class Trap : MonoBehaviour
 
     private void ApplyTrapEffect(Collider2D collision)
     {
-       
         if (collision.CompareTag("Player"))
-        {
-            Player player = collision.GetComponent<Player>();
-            if (player != null && player.isInvincible) return;
+        {        
+            if (collision.TryGetComponent(out Player player))
+            {
+                if (player.isInvincible) return; 
 
-            IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null) damageable.TakeDamage(trapDamage);
+                player.TakeDamage(trapDamage); 
 
-            PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
-            if (playerMovement != null) playerMovement.ApplyKnockback(transform);
+                if (collision.TryGetComponent(out PlayerMovement movement))
+                {
+                    movement.ApplyKnockback(transform);
+                }
+            }
         }
-
-       
     }
 }

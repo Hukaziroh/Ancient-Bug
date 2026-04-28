@@ -12,17 +12,10 @@ public class TentacleFlower : MonoBehaviour
 
     private Transform player;
 
-    private void Awake()
-    {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-        {
-            player = playerObj.transform;
-        }
-    }
-
     void Start()
     {
+        if (Player.Instance != null) player = Player.Instance.transform;
+
         if (tentacleCollider != null)
         {
             tentacleCollider.enabled = false;

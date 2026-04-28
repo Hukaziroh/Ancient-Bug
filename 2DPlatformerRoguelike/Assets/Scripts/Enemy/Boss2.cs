@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections;
-using UnityEditor.Experimental.GraphView;
-using UnityEngineInternal;
 
 public class Boss2 : MonoBehaviour, IDamageable
 {
@@ -23,7 +21,6 @@ public class Boss2 : MonoBehaviour, IDamageable
 
     [Header("데미지 설정")]
     public float basicDamage = 15f;
-    public float chargeMoveDamage = 20f;
     public float chargeDamage = 40f;
 
     [Header("타격  판정 설정(기본)")]
@@ -40,12 +37,12 @@ public class Boss2 : MonoBehaviour, IDamageable
     public GameObject portalPrefab;
 
     [Header("사운드 설정")]
-    public AudioClip deathSound;        
-    public AudioClip basicAttackSound;  
-    public AudioClip rangedAttackSound; 
-    public AudioClip chargeLoopSound;   
-    public AudioClip chargeSlamSound;   
-    public AudioSource loopAudioSource;  
+    public AudioClip deathSound;
+    public AudioClip basicAttackSound;
+    public AudioClip rangedAttackSound;
+    public AudioClip chargeLoopSound;
+    public AudioClip chargeSlamSound;
+    public AudioSource loopAudioSource;
 
     [Header("타이머")]
     public float idleDelay = 1.5f;
@@ -76,13 +73,12 @@ public class Boss2 : MonoBehaviour, IDamageable
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) player = playerObj.transform;
     }
 
     private void Start()
     {
+        if (Player.Instance != null) player = Player.Instance.transform;
+
         currentHp = maxHp;
 
         if (BossHealthBar.Instance != null)
@@ -253,12 +249,6 @@ public class Boss2 : MonoBehaviour, IDamageable
 
             if (hit != null)
             {
-                IDamageable damageable = hit.GetComponent<IDamageable>();
-                if (damageable != null)
-                {
-                    damageable.TakeDamage(chargeMoveDamage);
-                }
-
                 break;
             }
 
@@ -343,16 +333,10 @@ public class Boss2 : MonoBehaviour, IDamageable
 
         if (RoomManager.Instance != null) RoomManager.Instance.OnEnemyKilled();
 
-        GameObject activePlayer = GameObject.FindGameObjectWithTag("Player");
-        if (activePlayer != null)
+        if (Player.Instance != null)
         {
-            Player playerScript = activePlayer.GetComponent<Player>();
-            if (playerScript != null)
-            {
-                playerScript.AddGold(dropGold);
-                playerScript.Heal(playerScript.maxHP * 0.2f);
-            }
-           
+            Player.Instance.AddGold(dropGold);
+            Player.Instance.Heal(Player.Instance.maxHP * 0.2f);
         }
 
         StartCoroutine(DeathRoutine());

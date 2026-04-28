@@ -7,9 +7,9 @@ public class OptionManager : MonoBehaviour
 {
     [Header("UI 연결")]
     public GameObject optionPanel;
-    public Slider bgmSlider;      
-    public Slider sfxSlider;     
-    public Toggle fullscreenToggle; 
+    public Slider bgmSlider;
+    public Slider sfxSlider;
+    public Toggle fullscreenToggle;
 
     [Header("오디오 믹서 연결")]
     public AudioMixer masterMixer;
@@ -17,11 +17,12 @@ public class OptionManager : MonoBehaviour
     private void Start()
     {
         if (optionPanel != null) optionPanel.SetActive(false);
+
         LoadSettings();
     }
 
     private void LoadSettings()
-    {      
+    {
         float bgm = PlayerPrefs.GetFloat("BGMVolume", 1f);
         float sfx = PlayerPrefs.GetFloat("SFXVolume", 1f);
         bool isFull = PlayerPrefs.GetInt("Fullscreen", 1) == 1;
@@ -32,36 +33,46 @@ public class OptionManager : MonoBehaviour
 
         SetBGMVolume(bgm);
         SetSFXVolume(sfx);
+
         SetFullscreen(isFull);
-    }
-
-    public void OpenOption()
-    {
-        if (optionPanel != null) optionPanel.SetActive(true);
-    }
-
-    public void CloseOption()
-    {
-        if (optionPanel != null) optionPanel.SetActive(false);
     }
 
     public void SetBGMVolume(float volume)
     {
-        masterMixer.SetFloat("BGM", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("BGMVolume", volume);
+        if (masterMixer != null)
+        {
+            float safeVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+            masterMixer.SetFloat("BGM", Mathf.Log10(safeVolume) * 20);
+            PlayerPrefs.SetFloat("BGMVolume", volume);
+        }
     }
 
     public void SetSFXVolume(float volume)
     {
-        masterMixer.SetFloat("SFX", Mathf.Log10(volume) * 20);
-        PlayerPrefs.SetFloat("SFXVolume", volume);
+        if (masterMixer != null)
+        {
+            float safeVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+            masterMixer.SetFloat("SFX", Mathf.Log10(safeVolume) * 20);
+            PlayerPrefs.SetFloat("SFXVolume", volume);
+        }
     }
 
     public void SetFullscreen(bool isFullscreen)
     {
-        Screen.fullScreen = isFullscreen;
-        PlayerPrefs.SetInt("Fullscreen", isFullscreen ? 1 : 0); 
+        if (isFullscreen)
+        {
+            Screen.SetResolution(1920, 1080, true);
+        }
+        else
+        {
+            Screen.SetResolution(1280, 720, false);
+        }
+
+        PlayerPrefs.SetInt("Fullscreen", isFullscreen ? 1 : 0);
     }
+
+    public void OpenOption() { if (optionPanel != null) optionPanel.SetActive(true); }
+    public void CloseOption() { if (optionPanel != null) optionPanel.SetActive(false); }
 
     private void Update()
     {

@@ -7,14 +7,17 @@ public class Enemy : MonoBehaviour, IDamageable
     public EnemyStatData statData;
 
     [Header("패트롤 설정")]
-    public Transform groundDetection; 
-    public float rayDistance = 1f;   
+    public Transform groundDetection;
+    public float rayDistance = 1f;
     public LayerMask groundLayer;
 
     [Header("공격 설정")]
-    public float attackRange = 5f;      
+    public float attackRange = 5f;
     public Transform attackPoint;
     public GameObject projectilePrefab;
+
+    [Header("투척 딜레이 설정")]
+    public float throwDelay = 0f;
 
     [Header("보상 설정")]
     public int dropGold = 50;
@@ -33,8 +36,6 @@ public class Enemy : MonoBehaviour, IDamageable
     private bool movingRight = false;
     private bool isAttacking = false;
 
-   
-
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -45,23 +46,20 @@ public class Enemy : MonoBehaviour, IDamageable
     private void Start()
     {
         if (statData != null) currentHP = statData.maxHP;
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if(playerObj != null)
-        {
-            player = playerObj.transform;
-        }
+
+        if (Player.Instance != null) player = Player.Instance.transform;
     }
 
     private void Update()
     {
-        if (isDead || isAttacking) return;   
-        
-        if(player != null && Vector2.Distance(transform.position,player.position) <= attackRange)
+        if (isDead || isAttacking) return;
+
+        if (player != null && Vector2.Distance(transform.position, player.position) <= attackRange)
         {
             AttackPlayer();
             return;
         }
-        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, rayDistance, groundLayer);  
+        RaycastHit2D groundInfo = Physics2D.Raycast(groundDetection.position, Vector2.down, rayDistance, groundLayer);
         Vector2 forwardDirection = movingRight ? Vector2.right : Vector2.left;
         RaycastHit2D wallInfo = Physics2D.Raycast(groundDetection.position, forwardDirection, 0.1f, groundLayer);
 
@@ -75,8 +73,8 @@ public class Enemy : MonoBehaviour, IDamageable
     private void FixedUpdate()
     {
         if (isDead) return;
-    
-        if(isAttacking)
+
+        if (isAttacking)
         {
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             return;
@@ -87,9 +85,9 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     private void Flip()
-    {     
+    {
         movingRight = !movingRight;
-       
+
         Vector3 currentScale = transform.localScale;
         currentScale.x *= -1;
         transform.localScale = currentScale;
@@ -106,7 +104,7 @@ public class Enemy : MonoBehaviour, IDamageable
         }
 
         bool isPlayerOnRight = player.position.x > transform.position.x;
-        if(isPlayerOnRight != movingRight)
+        if (isPlayerOnRight != movingRight)
         {
             Flip();
         }
@@ -114,15 +112,21 @@ public class Enemy : MonoBehaviour, IDamageable
     }
 
     public void PerformEnemyAttack()
-    {
-        if (attackPoint == null) return;
-
+    {   
         if (attackSound != null && SoundManager.Instance != null)
         {
             SoundManager.Instance.PlaySFX(attackSound);
         }
+        StartCoroutine(DelayedThrowRoutine());
+    }
 
-        GameObject projObj = EnemyProjectilePool.Instance.GetProjectile(projectilePrefab); ;
+    private IEnumerator DelayedThrowRoutine()
+    {
+        yield return new WaitForSeconds(throwDelay);
+
+        if (isDead || attackPoint == null) yield break;
+
+        GameObject projObj = EnemyProjectilePool.Instance.GetProjectile(projectilePrefab);
         if (projObj == null)
         {
             projObj = Instantiate(projectilePrefab);
@@ -135,15 +139,14 @@ public class Enemy : MonoBehaviour, IDamageable
         IProjectile projectile = projObj.GetComponent<IProjectile>();
 
         if (projectile != null) projectile.Setup(throwDirection, statData.damage);
-
     }
 
     private IEnumerator AttackCooldownRoutine()
     {
-        yield return new WaitForSeconds(1.5f); 
+        yield return new WaitForSeconds(1.5f);
         isAttacking = false;
-
     }
+
     public void TakeDamage(float damage)
     {
         if (isDead) return;
@@ -190,16 +193,11 @@ public class Enemy : MonoBehaviour, IDamageable
 
         rb.gravityScale = 0;
 
-        GameObject activePlayer = GameObject.FindGameObjectWithTag("Player");
-
-        if (activePlayer != null)
+        if (Player.Instance != null)
         {
-            Player playerScript = activePlayer.GetComponent<Player>();
-            if (playerScript != null)
-            {
-                playerScript.AddGold(dropGold);
-            }
+            Player.Instance.AddGold(dropGold);
         }
+
         Destroy(gameObject, 2f);
     }
 
@@ -220,6 +218,4 @@ public class Enemy : MonoBehaviour, IDamageable
             Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         }
     }
-
-  
 }

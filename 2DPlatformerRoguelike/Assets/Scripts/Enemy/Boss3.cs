@@ -67,13 +67,12 @@ public class Boss3 : MonoBehaviour, IDamageable
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
-
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) player = playerObj.transform;
     }
 
     private void Start()
     {
+        if (Player.Instance != null) player = Player.Instance.transform;
+
         currentHp = maxHp;
 
         if (BossHealthBar.Instance != null)
@@ -149,10 +148,17 @@ public class Boss3 : MonoBehaviour, IDamageable
 
                 if (distance <= meleeAttackRange)
                 {
-                    int rand = Random.Range(0, 3);
-                    if (rand == 0) StartCoroutine(Attack1Routine());
-                    else if (rand == 1) StartCoroutine(Attack2Routine());
-                    else StartCoroutine(Attack3Routine());
+                    if (Random.Range(0, 100) < 20)
+                    {
+                        StartCoroutine(RunAttackRoutine());
+                    }
+                    else
+                    {
+                        int rand = Random.Range(0, 3);
+                        if (rand == 0) StartCoroutine(Attack1Routine());
+                        else if (rand == 1) StartCoroutine(Attack2Routine());
+                        else StartCoroutine(Attack3Routine());
+                    }
                 }
                 else if (distance >= runAttackRange)
                 {
@@ -351,15 +357,10 @@ public class Boss3 : MonoBehaviour, IDamageable
 
         if (RoomManager.Instance != null) RoomManager.Instance.OnEnemyKilled();
 
-        if (player != null)
+        if (Player.Instance != null)
         {
-            Player playerScript = player.GetComponent<Player>();
-            if (playerScript != null)
-            {
-                playerScript.AddGold(dropGold);
-                playerScript.Heal(playerScript.maxHP * 0.2f);
-            }
-          
+            Player.Instance.AddGold(dropGold);
+            Player.Instance.Heal(Player.Instance.maxHP * 0.2f);
         }
         StartCoroutine(DeathRoutine());
     }

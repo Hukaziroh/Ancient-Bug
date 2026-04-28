@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class Door : MonoBehaviour
 {
@@ -8,36 +9,39 @@ public class Door : MonoBehaviour
 
     private bool isOpened = false;
     private bool wasUsed = false;
-    private void Start()
+
+    private IEnumerator Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-    }
 
-    private void Update()
-    {
-        if (!isOpened && RoomManager.Instance.remainingEnemies <= 0)
+        yield return null;
+
+ 
+        if (RoomManager.Instance != null && RoomManager.Instance.remainingEnemies <= 0)
         {
             OpenDoor();
         }
     }
 
-    private void OpenDoor()
+    public void OpenDoor()
     {
-        isOpened = true;    
+        if (isOpened) return;
+
+        isOpened = true;
         if (openDoorSprite != null)
         {
             spriteRenderer.sprite = openDoorSprite;
         }
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+      
+        if (Player.Instance != null && collision.gameObject == Player.Instance.gameObject)
         {
             if (isOpened && !wasUsed && !RoomManager.Instance.isTransitioning)
             {
-                wasUsed = true; 
+                wasUsed = true;
 
                 if (RewardManager.Instance != null)
                 {

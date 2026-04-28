@@ -4,8 +4,8 @@ using UnityEngine.Pool;
 public class Spear : MonoBehaviour, IProjectile
 {
     [Header("ÅõÃ´ ¼³Á¤")]
-    public float throwPowerX = 8f;   
-    public float throwPowerY = 5f;   
+    public float throwPowerX = 8f;
+    public float throwPowerY = 5f;
     public float lifetime = 3f;
 
     float damage;
@@ -21,7 +21,7 @@ public class Spear : MonoBehaviour, IProjectile
     public void Setup(Vector2 moveDirection, float attackDamage)
     {
         damage = attackDamage;
- 
+
         float dirX = moveDirection.x > 0 ? 1f : -1f;
 
         rb.linearVelocity = new Vector2(dirX * throwPowerX, throwPowerY);
@@ -31,7 +31,7 @@ public class Spear : MonoBehaviour, IProjectile
     }
 
     private void Update()
-    {     
+    {
         if (rb.linearVelocity != Vector2.zero)
         {
             float angle = Mathf.Atan2(rb.linearVelocity.y, rb.linearVelocity.x) * Mathf.Rad2Deg;
@@ -39,24 +39,19 @@ public class Spear : MonoBehaviour, IProjectile
         }
     }
 
-  
     private void OnTriggerEnter2D(Collider2D collision)
-    {    
-        if (collision.CompareTag("Player"))
+    {
+        if (Player.Instance != null && collision.gameObject == Player.Instance.gameObject)
         {
-            Player player = collision.GetComponent<Player>();
-            if (player != null && player.isInvincible)
+            if (!Player.Instance.isInvincible)
             {
-                ReturnToPool();
-                return;
+                Player.Instance.TakeDamage(damage);
+
+                if (Player.Instance.TryGetComponent(out PlayerMovement movement))
+                {
+                    movement.ApplyKnockback(transform);
+                }
             }
-
-            IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null) damageable.TakeDamage(damage);
-
-            PlayerMovement playerMovement = collision.GetComponent<PlayerMovement>();
-            if (playerMovement != null) playerMovement.ApplyKnockback(transform);
-
             ReturnToPool();
         }
         else if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -75,6 +70,10 @@ public class Spear : MonoBehaviour, IProjectile
         if (gameObject.activeSelf && managedPool != null)
         {
             managedPool.Release(gameObject);
+        }
+        else if (managedPool == null)
+        {
+            Destroy(gameObject);
         }
     }
 }

@@ -12,7 +12,7 @@ public class ShopManager : MonoBehaviour
     public int attackCost = 200;
 
     [Header("사운드 설정")]
-    public AudioClip buySound; 
+    public AudioClip buySound;
     public AudioClip failSound;
 
     private Player player;
@@ -26,8 +26,7 @@ public class ShopManager : MonoBehaviour
     }
     private void Start()
     {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null) player = playerObj.GetComponent<Player>();
+        if (Player.Instance != null) player = Player.Instance;
     }
 
     public void OpenShopFromDoor(bool isLevel = false)

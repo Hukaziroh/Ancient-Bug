@@ -12,4 +12,9 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("Game");
     }
+
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
 }
