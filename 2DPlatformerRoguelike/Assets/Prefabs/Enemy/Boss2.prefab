@@ -196,19 +196,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss2
   currentState: 0
-  maxHp: 5000
+  maxHp: 6000
   currentHp: 1200
   moveSpeed: 3.5
   meleeAttackRange: 2
   chargeAttackRange: 9
   rangedAttackRange: 10
-  basicDamage: 15
-  chargeMoveDamage: 20
+  basicDamage: 20
   chargeDamage: 40
   playerLayer:
     serializedVersion: 2
     m_Bits: 64
-  attackHitBox: {x: 4, y: 3}
+  attackHitBox: {x: 3.7, y: 3}
   hitOffset: 1.5
   projectilePrefab: {fileID: 5513450165420888171, guid: 4002fd1fba0ff2d4ea6226f010fd4152, type: 3}
   firePoint: {fileID: 2514498045519643489}
@@ -222,14 +221,14 @@ MonoBehaviour:
   loopAudioSource: {fileID: 8383633620112111099}
   idleDelay: 1.5
   basicAnticipation: 0.2
-  basicHitDelay: 0.6
+  basicHitDelay: 0.2
   basicRecoil: 0.5
   rangedAnticipation: 0.4
   rangedRecoil: 0.6
   chargeWarningTime: 0.6
   chargeSpeed: 12
   chargeDuration: 0.4
-  chargeSlamDelay: 0.6
+  chargeSlamDelay: 0.2
   chargeRecoil: 1
 --- !u!82 &8383633620112111099
 AudioSource:

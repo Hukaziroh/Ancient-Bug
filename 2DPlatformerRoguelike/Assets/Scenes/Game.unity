@@ -380,14 +380,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PauseManager
   pausePanel: {fileID: 1422666675}
   optionPanel: {fileID: 2106988619}
+  bgmSlider: {fileID: 2134594281}
+  sfxSlider: {fileID: 1797000764}
+  fullscreenToggle: {fileID: 113252161}
   hpText: {fileID: 2089713219}
   attackText: {fileID: 1118237172}
   goldText: {fileID: 1847770099}
   pauseClickSound: {fileID: 8300000, guid: 3023c259723fe394288b0f50d9d7c525, type: 3}
   masterMixer: {fileID: 24100000, guid: f15dcb6457f70a441bcbf1baf60da25f, type: 2}
-  bgmSlider: {fileID: 2134594281}
-  sfxSlider: {fileID: 1797000764}
-  fullscreenToggle: {fileID: 113252161}
 --- !u!4 &198673979
 Transform:
   m_ObjectHideFlags: 0
@@ -6204,10 +6204,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6464510604843603002, guid: b654b65cff1247e488943b650aa80769, type: 3}
-      propertyPath: skillSound
-      value: 
-      objectReference: {fileID: 8300000, guid: bd6fc43fb0d315944b6c5f39c56b95d1, type: 3}
     - target: {fileID: 8768782082202985495, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: m_Name
       value: Player

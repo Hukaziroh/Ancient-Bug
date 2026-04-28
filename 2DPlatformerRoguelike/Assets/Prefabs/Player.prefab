@@ -71,7 +71,7 @@ PrefabInstance:
     - target: {fileID: 6211704402343858084, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
       propertyPath: skillSound
       value: 
-      objectReference: {fileID: 8300000, guid: e79a56eb79fc3e849a84d68da9b8dccc, type: 3}
+      objectReference: {fileID: 8300000, guid: bd6fc43fb0d315944b6c5f39c56b95d1, type: 3}
     - target: {fileID: 6211704402343858084, guid: 27f35b2945ed4bf4aa5eebac283c3137, type: 3}
       propertyPath: attackHitSound
       value: 

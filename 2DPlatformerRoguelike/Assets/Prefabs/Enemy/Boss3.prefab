@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss3
   currentState: 0
-  maxHp: 4000
+  maxHp: 4500
   currentHp: 0
   walkSpeed: 3
   runSpeed: 13
@@ -217,7 +217,7 @@ MonoBehaviour:
     m_Bits: 512
   wallCheckDistance: 1.5
   maxBounces: 3
-  dropGold: 1000
+  dropGold: 500
   portalPrefab: {fileID: 2346168283049686108, guid: 9150ede824f1c34459ee34c27caa0ce9, type: 3}
   idleToWalkDelay: 1
   deathSound: {fileID: 8300000, guid: f2a82e5f07787e745ab971d52fa2f3ff, type: 3}

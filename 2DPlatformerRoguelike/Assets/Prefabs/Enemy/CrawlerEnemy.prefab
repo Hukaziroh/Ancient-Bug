@@ -140,8 +140,10 @@ MonoBehaviour:
   attackRange: 0
   attackPoint: {fileID: 0}
   projectilePrefab: {fileID: 0}
+  throwDelay: 0
   dropGold: 15
   deathSound: {fileID: 8300000, guid: 97e3a7379168ccc40ad3eabef8775828, type: 3}
+  attackSound: {fileID: 0}
 --- !u!61 &1118995904162092640
 BoxCollider2D:
   m_ObjectHideFlags: 0

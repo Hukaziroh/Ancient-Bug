@@ -202,6 +202,7 @@ MonoBehaviour:
   attackRange: 1
   attackPoint: {fileID: 704564981504519844}
   projectilePrefab: {fileID: 8673902963340712079, guid: 516107e9c29d318429552a83634cc980, type: 3}
+  throwDelay: 0
   dropGold: 30
   deathSound: {fileID: 8300000, guid: 9414e2c36138791449d5f3ab2501717c, type: 3}
   attackSound: {fileID: 8300000, guid: a233d078992e2184da7b1fe239f0a410, type: 3}
