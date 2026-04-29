@@ -52,7 +52,7 @@ public class FEBullet : MonoBehaviour, IProjectile
         {
             ReturnToPool();
         }
-        else if (collision.gameObject.layer == LayerMask.NameToLayer("Wall"))
+        else if (collision.gameObject.layer == LayerMask.NameToLayer("Default"))
         {
             ReturnToPool();
         }

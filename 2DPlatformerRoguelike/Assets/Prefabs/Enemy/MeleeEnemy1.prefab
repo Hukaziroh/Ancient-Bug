@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32d55ae099013ca48a19e85374d30a59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MoveEnemy
-  statData: {fileID: 11400000, guid: 2e4c4930599fc50418adf7f6e2808b03, type: 2}
+  statData: {fileID: 11400000, guid: dc252e686d4549d47a6691250c2093d8, type: 2}
   groundDetection: {fileID: 6829715793235339599}
   rayDistance: 1
   groundLayer:

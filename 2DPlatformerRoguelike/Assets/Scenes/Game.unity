@@ -4449,6 +4449,18 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2007376001}
+    - target: {fileID: 2556756210756368938, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556756210756368938, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 2556756210756368938, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 3015808118939214721, guid: bf5e6d57f2385e64b8f13f768be2ed5a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -6164,6 +6176,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2589883100715487322, guid: b654b65cff1247e488943b650aa80769, type: 3}
+      propertyPath: maxHP
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 4585431207362018213, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.58
@@ -6203,6 +6219,10 @@ PrefabInstance:
     - target: {fileID: 4585431207362018213, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6464510604843603002, guid: b654b65cff1247e488943b650aa80769, type: 3}
+      propertyPath: AttackDamage
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8768782082202985495, guid: b654b65cff1247e488943b650aa80769, type: 3}
       propertyPath: m_Name

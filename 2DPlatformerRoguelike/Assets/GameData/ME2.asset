@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStatData
   enemyName: Dummy
   maxHP: 100
-  damage: 20
+  damage: 30
   moveSpeed: 3
