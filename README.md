@@ -10,7 +10,7 @@
 ---
 
 ## 기술 스택 (Tech Stack)
-- **Engine:** Unity 2022
+- **Engine:** Unity 6000.3.11f1
 - **Language:** C#
 - **Architecture & Patterns:** Single Scene Architecture, FSM, Object Pool, Data-Driven Design (Scriptable Object)
 
