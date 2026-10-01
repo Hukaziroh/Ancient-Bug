@@ -1,24 +1,22 @@
-﻿# Ancient Bug 🐛
+﻿# Ancient Bug 
 
 > **"죽음은 끝이 아닌 새로운 시작. 끝없이 변주하는 미궁을 돌파하라!"**
 
 **Ancient Bug**는 절차적으로 생성되는 미궁 속에서 한계에 도전하는 2D 횡스크롤 플랫포머 로그라이크 액션 게임입니다. 매 런(Run)마다 새롭게 조합되는 스테이지와 고유한 패턴을 가진 다채로운 보스들을 돌파하며 짜릿한 성취감을 느껴보세요.
 
-## 🎮 링크 (Links)
+## 링크 (Links)
 - **플레이 영상:** [YouTube 링크 삽입]
-- **스토브 인디 상점:** [Stove 링크 삽입]
-- **포트폴리오 문서:** [PDF 링크 또는 노션 링크 삽입]
 
 ---
 
-## 🛠 기술 스택 (Tech Stack)
+## 기술 스택 (Tech Stack)
 - **Engine:** Unity 2022
 - **Language:** C#
 - **Architecture & Patterns:** Single Scene Architecture, FSM, Object Pool, Data-Driven Design (Scriptable Object)
 
 ---
 
-## ✨ 핵심 기술 스펙 (Key Features)
+## 핵심 기술 스펙 (Key Features)
 
 ### 1. 싱글 씬(Single Scene) 기반 절차적 맵 생성 (PCG)
 - 무거운 씬(Scene) 로딩 과정을 제거하고, 하나의 씬 안에서 런타임에 방(Room) 프리팹을 동적으로 인스턴스화하여 끊김 없는(Seamless) 플레이 흐름을 구현했습니다.
@@ -37,19 +35,19 @@
 
 ---
 
-## 🚀 트러블슈팅 (Troubleshooting)
+## 트러블슈팅 (Troubleshooting)
 
-### 🐛 1. 보스 사망 후 코루틴 잔류로 인한 '유령 공격' 버그 해결
+### 1. 보스 사망 후 코루틴 잔류로 인한 '유령 공격' 버그 해결
 - **문제:** 보스의 체력이 0이 되어 Dead 상태로 전환되었음에도, 백그라운드에서 대기 중(WaitForSeconds)이던 공격 코루틴이 뒤늦게 실행되며 죽은 시체가 맵을 돌진하거나 타격 판정을 일으키는 상태 불일치 현상 발생.
 - **해결:** 사망 상태 진입 메서드 최상단에 StopAllCoroutines()를 즉각 호출하고 모든 물리 콜라이더를 비활성화하도록 코드를 수정하여, 코루틴과 FSM 상태의 생명주기를 완벽하게 동기화했습니다.
 
-### 🐛 2. 예약된 타이머(Invoke)와 오브젝트 풀 생명주기 충돌 해결
+### 2. 예약된 타이머(Invoke)와 오브젝트 풀 생명주기 충돌 해결
 - **문제:** 투사체가 일정 시간이 지나 자동으로 회수되는 타이머(Invoke)가 실행 중일 때, 투사체가 플레이어나 벽에 부딪혀 강제로 풀(Pool)에 반환된 이후 뒤늦게 타이머가 터지며 NullReferenceException 발생.
 - **해결:** 투사체가 강제로 비활성화되거나 풀에 반환되는 시점(OnDisable)에 CancelInvoke()를 호출하여 예약된 반환 로직을 취소, 생명주기 충돌을 방지했습니다.
 
 ---
 
-## 🕹️ 조작법 (Controls)
+## 조작법 (Controls)
 
 | 액션 | 키보드 (Keyboard) | 마우스 (Mouse) |
 | :--- | :--- | :--- |
